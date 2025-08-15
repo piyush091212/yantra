@@ -40,31 +40,85 @@ const shouldUseApi = async () => {
 // Songs API
 export const songsAPI = {
   getAll: async (params = {}) => {
+    if (!(await shouldUseApi())) {
+      // Fallback to mock data
+      let songs = [...mockSongs];
+      if (params.recent) songs = songs.slice(0, 3);
+      if (params.popular) songs = songs.slice(0, 5);
+      if (params.limit) songs = songs.slice(0, params.limit);
+      return songs;
+    }
+    
     const response = await axios.get(`${API}/songs`, { params });
     return response.data;
   },
 
   getById: async (id) => {
+    if (!(await shouldUseApi())) {
+      return mockSongs.find(song => song.id === id) || null;
+    }
+    
     const response = await axios.get(`${API}/songs/${id}`);
     return response.data;
   },
 
   create: async (songData) => {
+    if (!(await shouldUseApi())) {
+      // Mock creation - just return the data with a new ID
+      return { ...songData, id: Date.now().toString(), created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+    }
+    
     const response = await axios.post(`${API}/songs`, songData);
     return response.data;
   },
 
   update: async (id, songData) => {
+    if (!(await shouldUseApi())) {
+      const existing = mockSongs.find(song => song.id === id);
+      return existing ? { ...existing, ...songData, updated_at: new Date().toISOString() } : null;
+    }
+    
     const response = await axios.put(`${API}/songs/${id}`, songData);
     return response.data;
   },
 
   delete: async (id) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Song deleted successfully (mock)" };
+    }
+    
     const response = await axios.delete(`${API}/songs/${id}`);
     return response.data;
   },
 
   search: async (query, limit = 50) => {
+    if (!(await shouldUseApi())) {
+      // Mock search
+      const q = query.toLowerCase();
+      const songs = mockSongs.filter(song => 
+        song.title.toLowerCase().includes(q) ||
+        song.artist.toLowerCase().includes(q) ||
+        song.album.toLowerCase().includes(q) ||
+        song.genre.toLowerCase().includes(q)
+      ).slice(0, limit);
+      
+      const artists = mockArtists.filter(artist => 
+        artist.name.toLowerCase().includes(q)
+      ).slice(0, limit);
+      
+      const albums = mockAlbums.filter(album => 
+        album.title.toLowerCase().includes(q) ||
+        album.artist.toLowerCase().includes(q)
+      ).slice(0, limit);
+      
+      const playlists = mockPlaylists.filter(playlist => 
+        playlist.name.toLowerCase().includes(q) ||
+        playlist.description.toLowerCase().includes(q)
+      ).slice(0, limit);
+      
+      return { songs, artists, albums, playlists };
+    }
+    
     const response = await axios.get(`${API}/songs/search`, {
       params: { q: query, limit }
     });
