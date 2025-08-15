@@ -5,19 +5,22 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 // Configure axios defaults
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 5000; // Reduced timeout
 
-// Fallback to mock data if API is not available
+// Global state for API availability
 let useApiData = true;
 
 // Create axios interceptor for better error handling
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error);
+    // Only log errors in development, not in console for users
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('API request failed, falling back to mock data');
+    }
+    
     // If it's a network error or 500, fallback to mock data
-    if (!error.response || error.response.status >= 500) {
-      console.log('Falling back to mock data due to API unavailability');
+    if (!error.response || error.response.status >= 500 || error.code === 'ERR_NETWORK') {
       useApiData = false;
     }
     return Promise.reject(error);
@@ -29,8 +32,8 @@ const shouldUseApi = async () => {
   if (!useApiData) return false;
   
   try {
-    await axios.get(`${API}/`);
-    return true;
+    const response = await axios.get(`${API}/`, { timeout: 2000 });
+    return response.status === 200;
   } catch (error) {
     useApiData = false;
     return false;
