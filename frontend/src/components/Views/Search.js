@@ -9,35 +9,10 @@ import { useSearch } from '../../hooks/useMusic';
 const Search = ({ searchQuery }) => {
   const { playSong, currentSong, isPlaying } = usePlayer();
   const [activeTab, setActiveTab] = useState('all');
+  const { searchResults, loading } = useSearch(searchQuery);
 
-  const filteredResults = useMemo(() => {
-    if (!searchQuery.trim()) return { songs: [], artists: [], albums: [], playlists: [] };
-
-    const query = searchQuery.toLowerCase();
-    
-    return {
-      songs: mockSongs.filter(song => 
-        song.title.toLowerCase().includes(query) ||
-        song.artist.toLowerCase().includes(query) ||
-        song.album.toLowerCase().includes(query) ||
-        song.genre.toLowerCase().includes(query)
-      ),
-      artists: mockArtists.filter(artist => 
-        artist.name.toLowerCase().includes(query)
-      ),
-      albums: mockAlbums.filter(album => 
-        album.title.toLowerCase().includes(query) ||
-        album.artist.toLowerCase().includes(query)
-      ),
-      playlists: mockPlaylists.filter(playlist => 
-        playlist.name.toLowerCase().includes(query) ||
-        playlist.description.toLowerCase().includes(query)
-      )
-    };
-  }, [searchQuery]);
-
-  const handlePlaySong = (song) => {
-    playSong(song, mockSongs);
+  const handlePlaySong = (song, songList = []) => {
+    playSong(song, songList.length > 0 ? songList : searchResults.songs);
   };
 
   const SongRow = ({ song }) => {
