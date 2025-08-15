@@ -3,21 +3,21 @@ import { Play, Clock, Music } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { usePlayer } from '../../context/PlayerContext';
-import { mockSongs, mockPlaylists, mockRecentlyPlayed } from '../../data/mock';
+import { useFeaturedContent } from '../../hooks/useMusic';
+import { useAdminStats } from '../../hooks/useAdmin';
 
 const Home = () => {
   const { playSong, currentSong, isPlaying } = usePlayer();
+  const { songs, playlists, recentSongs, loading } = useFeaturedContent();
+  const { data: stats } = useAdminStats();
 
-  const handlePlaySong = (song) => {
-    playSong(song, mockSongs);
+  const handlePlaySong = (song, songList = []) => {
+    playSong(song, songList.length > 0 ? songList : songs);
   };
 
   const handlePlayPlaylist = (playlist) => {
-    const playlistSongs = mockSongs.filter(song => 
-      playlist.songs.includes(song.id)
-    );
-    if (playlistSongs.length > 0) {
-      playSong(playlistSongs[0], playlistSongs);
+    if (playlist.songs && playlist.songs.length > 0) {
+      playSong(playlist.songs[0], playlist.songs);
     }
   };
 
@@ -29,7 +29,7 @@ const Home = () => {
         className={`group flex items-center p-3 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer ${
           isCurrentSong ? 'bg-zinc-800' : ''
         }`}
-        onClick={() => handlePlaySong(song)}
+        onClick={() => handlePlaySong(song, songs)}
       >
         <div className="w-12 flex justify-center">
           {showIndex && !isCurrentSong && (
@@ -42,7 +42,7 @@ const Home = () => {
           } ${isCurrentSong && isPlaying ? 'text-green-500' : ''}`} />
         </div>
         <img
-          src={song.coverUrl}
+          src={song.coverUrl || song.cover_url}
           alt={song.title}
           className="w-10 h-10 rounded-md object-cover ml-2"
         />
@@ -52,10 +52,10 @@ const Home = () => {
           }`}>
             {song.title}
           </p>
-          <p className="text-zinc-400 text-sm truncate">{song.artist}</p>
+          <p className="text-zinc-400 text-sm truncate">{song.artist || song.artist?.name}</p>
         </div>
         <div className="hidden md:block text-zinc-400 text-sm ml-4">
-          {song.album}
+          {song.album || song.album?.title || 'Single'}
         </div>
         <div className="text-zinc-400 text-sm ml-4 flex items-center">
           <Clock className="w-3 h-3 mr-1" />
@@ -70,7 +70,7 @@ const Home = () => {
       <CardContent className="p-0">
         <div className="relative" onClick={() => handlePlayPlaylist(playlist)}>
           <img
-            src={playlist.coverUrl}
+            src={playlist.coverUrl || playlist.cover_url}
             alt={playlist.name}
             className="w-full h-48 object-cover rounded-t-lg"
           />
@@ -87,11 +87,28 @@ const Home = () => {
         <div className="p-4">
           <h3 className="font-semibold text-white truncate">{playlist.name}</h3>
           <p className="text-sm text-zinc-400 truncate">{playlist.description}</p>
-          <p className="text-xs text-zinc-500 mt-1">{playlist.songCount} songs</p>
+          <p className="text-xs text-zinc-500 mt-1">{playlist.songCount || playlist.song_count || 0} songs</p>
         </div>
       </CardContent>
     </Card>
   );
+
+  if (loading) {
+    return (
+      <div className="flex-1 bg-gradient-to-b from-zinc-900 to-black text-white overflow-auto pb-32 md:pb-24">
+        <div className="p-6">
+          <div className="animate-pulse space-y-8">
+            <div className="h-8 bg-zinc-800 rounded w-1/2"></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-zinc-800 rounded-lg h-64"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 bg-gradient-to-b from-zinc-900 to-black text-white overflow-auto pb-32 md:pb-24">
@@ -106,26 +123,28 @@ const Home = () => {
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6">Featured Playlists</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {mockPlaylists.map((playlist) => (
+            {playlists.map((playlist) => (
               <PlaylistCard key={playlist.id} playlist={playlist} />
             ))}
           </div>
         </section>
 
         {/* Recently Played */}
-        <section className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Recently Played</h2>
-            <Button variant="ghost" className="text-zinc-400 hover:text-white">
-              Show all
-            </Button>
-          </div>
-          <div className="space-y-2">
-            {mockRecentlyPlayed.map((song, index) => (
-              <SongRow key={song.id} song={song} index={index} />
-            ))}
-          </div>
-        </section>
+        {recentSongs.length > 0 && (
+          <section className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">Recently Played</h2>
+              <Button variant="ghost" className="text-zinc-400 hover:text-white">
+                Show all
+              </Button>
+            </div>
+            <div className="space-y-2">
+              {recentSongs.map((song, index) => (
+                <SongRow key={song.id} song={song} index={index} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Top Charts */}
         <section className="mb-8">
@@ -136,62 +155,64 @@ const Home = () => {
             </Button>
           </div>
           <div className="space-y-2">
-            {mockSongs.slice(0, 5).map((song, index) => (
+            {songs.slice(0, 5).map((song, index) => (
               <SongRow key={song.id} song={song} index={index} showIndex={true} />
             ))}
           </div>
         </section>
 
         {/* Quick Stats */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-6">Your Music Stats</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="bg-zinc-800 border-zinc-700">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-zinc-400">Total Songs</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center">
-                  <Music className="w-5 h-5 text-green-500 mr-2" />
-                  <span className="text-2xl font-bold">{mockSongs.length}</span>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-zinc-800 border-zinc-700">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-zinc-400">Playlists</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center">
-                  <Music className="w-5 h-5 text-blue-500 mr-2" />
-                  <span className="text-2xl font-bold">{mockPlaylists.length}</span>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-zinc-800 border-zinc-700">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-zinc-400">Artists</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center">
-                  <Music className="w-5 h-5 text-purple-500 mr-2" />
-                  <span className="text-2xl font-bold">3</span>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-zinc-800 border-zinc-700">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-zinc-400">Albums</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center">
-                  <Music className="w-5 h-5 text-orange-500 mr-2" />
-                  <span className="text-2xl font-bold">2</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+        {stats && (
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold mb-6">Your Music Stats</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card className="bg-zinc-800 border-zinc-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm text-zinc-400">Total Songs</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center">
+                    <Music className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-2xl font-bold">{stats.total_songs}</span>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-zinc-800 border-zinc-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm text-zinc-400">Playlists</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center">
+                    <Music className="w-5 h-5 text-blue-500 mr-2" />
+                    <span className="text-2xl font-bold">{stats.total_playlists}</span>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-zinc-800 border-zinc-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm text-zinc-400">Artists</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center">
+                    <Music className="w-5 h-5 text-purple-500 mr-2" />
+                    <span className="text-2xl font-bold">{stats.total_artists}</span>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-zinc-800 border-zinc-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm text-zinc-400">Albums</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center">
+                    <Music className="w-5 h-5 text-orange-500 mr-2" />
+                    <span className="text-2xl font-bold">{stats.total_albums}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
