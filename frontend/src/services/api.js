@@ -129,26 +129,49 @@ export const songsAPI = {
 // Artists API
 export const artistsAPI = {
   getAll: async (params = {}) => {
+    if (!(await shouldUseApi())) {
+      let artists = [...mockArtists];
+      if (params.limit) artists = artists.slice(0, params.limit);
+      return artists;
+    }
+    
     const response = await axios.get(`${API}/artists`, { params });
     return response.data;
   },
 
   getById: async (id) => {
+    if (!(await shouldUseApi())) {
+      return mockArtists.find(artist => artist.id === id) || null;
+    }
+    
     const response = await axios.get(`${API}/artists/${id}`);
     return response.data;
   },
 
   create: async (artistData) => {
+    if (!(await shouldUseApi())) {
+      return { ...artistData, id: Date.now().toString(), created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+    }
+    
     const response = await axios.post(`${API}/artists`, artistData);
     return response.data;
   },
 
   update: async (id, artistData) => {
+    if (!(await shouldUseApi())) {
+      const existing = mockArtists.find(artist => artist.id === id);
+      return existing ? { ...existing, ...artistData, updated_at: new Date().toISOString() } : null;
+    }
+    
     const response = await axios.put(`${API}/artists/${id}`, artistData);
     return response.data;
   },
 
   delete: async (id) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Artist deleted successfully (mock)" };
+    }
+    
     const response = await axios.delete(`${API}/artists/${id}`);
     return response.data;
   }
@@ -157,26 +180,49 @@ export const artistsAPI = {
 // Albums API
 export const albumsAPI = {
   getAll: async (params = {}) => {
+    if (!(await shouldUseApi())) {
+      let albums = [...mockAlbums];
+      if (params.limit) albums = albums.slice(0, params.limit);
+      return albums;
+    }
+    
     const response = await axios.get(`${API}/albums`, { params });
     return response.data;
   },
 
   getById: async (id) => {
+    if (!(await shouldUseApi())) {
+      return mockAlbums.find(album => album.id === id) || null;
+    }
+    
     const response = await axios.get(`${API}/albums/${id}`);
     return response.data;
   },
 
   create: async (albumData) => {
+    if (!(await shouldUseApi())) {
+      return { ...albumData, id: Date.now().toString(), created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+    }
+    
     const response = await axios.post(`${API}/albums`, albumData);
     return response.data;
   },
 
   update: async (id, albumData) => {
+    if (!(await shouldUseApi())) {
+      const existing = mockAlbums.find(album => album.id === id);
+      return existing ? { ...existing, ...albumData, updated_at: new Date().toISOString() } : null;
+    }
+    
     const response = await axios.put(`${API}/albums/${id}`, albumData);
     return response.data;
   },
 
   delete: async (id) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Album deleted successfully (mock)" };
+    }
+    
     const response = await axios.delete(`${API}/albums/${id}`);
     return response.data;
   }
@@ -185,36 +231,74 @@ export const albumsAPI = {
 // Playlists API
 export const playlistsAPI = {
   getAll: async (params = {}) => {
+    if (!(await shouldUseApi())) {
+      let playlists = [...mockPlaylists];
+      if (params.featured) playlists = playlists.slice(0, 3);
+      if (params.limit) playlists = playlists.slice(0, params.limit);
+      return playlists;
+    }
+    
     const response = await axios.get(`${API}/playlists`, { params });
     return response.data;
   },
 
   getById: async (id) => {
+    if (!(await shouldUseApi())) {
+      const playlist = mockPlaylists.find(playlist => playlist.id === id);
+      if (playlist) {
+        // Add songs to playlist
+        const playlistSongs = mockSongs.filter(song => playlist.songs?.includes(song.id));
+        return { ...playlist, songs: playlistSongs, song_count: playlistSongs.length };
+      }
+      return null;
+    }
+    
     const response = await axios.get(`${API}/playlists/${id}`);
     return response.data;
   },
 
   create: async (playlistData) => {
+    if (!(await shouldUseApi())) {
+      return { ...playlistData, id: Date.now().toString(), created_at: new Date().toISOString(), updated_at: new Date().toISOString(), songs: [], song_count: 0 };
+    }
+    
     const response = await axios.post(`${API}/playlists`, playlistData);
     return response.data;
   },
 
   update: async (id, playlistData) => {
+    if (!(await shouldUseApi())) {
+      const existing = mockPlaylists.find(playlist => playlist.id === id);
+      return existing ? { ...existing, ...playlistData, updated_at: new Date().toISOString() } : null;
+    }
+    
     const response = await axios.put(`${API}/playlists/${id}`, playlistData);
     return response.data;
   },
 
   delete: async (id) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Playlist deleted successfully (mock)" };
+    }
+    
     const response = await axios.delete(`${API}/playlists/${id}`);
     return response.data;
   },
 
   addSong: async (playlistId, songId) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Song added to playlist (mock)" };
+    }
+    
     const response = await axios.post(`${API}/playlists/${playlistId}/songs?song_id=${songId}`);
     return response.data;
   },
 
   removeSong: async (playlistId, songId) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Song removed from playlist (mock)" };
+    }
+    
     const response = await axios.delete(`${API}/playlists/${playlistId}/songs/${songId}`);
     return response.data;
   }
@@ -223,11 +307,53 @@ export const playlistsAPI = {
 // Admin API
 export const adminAPI = {
   getStats: async () => {
+    if (!(await shouldUseApi())) {
+      return {
+        total_songs: mockSongs.length,
+        total_artists: mockArtists.length,
+        total_albums: mockAlbums.length,
+        total_playlists: mockPlaylists.length
+      };
+    }
+    
     const response = await axios.get(`${API}/admin/stats`);
     return response.data;
   },
 
   getLogs: async (params = {}) => {
+    if (!(await shouldUseApi())) {
+      // Mock admin logs
+      return [
+        {
+          id: "1",
+          admin_name: "Admin",
+          action: "add",
+          entity_type: "song",
+          entity_id: "1",
+          entity_name: "Blinding Lights",
+          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: "2",
+          admin_name: "Admin", 
+          action: "add",
+          entity_type: "playlist",
+          entity_id: "1",
+          entity_name: "Today's Top Hits",
+          timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: "3",
+          admin_name: "Admin",
+          action: "add", 
+          entity_type: "artist",
+          entity_id: "2",
+          entity_name: "Ed Sheeran",
+          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+        }
+      ];
+    }
+    
     const response = await axios.get(`${API}/admin/logs`, { params });
     return response.data;
   }
