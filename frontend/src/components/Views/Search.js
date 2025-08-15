@@ -144,7 +144,6 @@ const Search = ({ searchQuery, setSearchQuery, onNavigate }) => {
             <p className="text-zinc-400">Find your favorite songs, artists, albums, and playlists</p>
           </div>
 
-          {/* Browse Categories */}
           <section>
             <h3 className="text-xl font-bold mb-6">Browse Categories</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -158,7 +157,11 @@ const Search = ({ searchQuery, setSearchQuery, onNavigate }) => {
                 { name: 'Country', color: 'bg-orange-600', icon: '🤠' },
                 { name: 'R&B', color: 'bg-indigo-600', icon: '🎹' }
               ].map((category) => (
-                <Card key={category.name} className={`${category.color} border-0 cursor-pointer hover:scale-105 transition-transform`}>
+                <Card 
+                  key={category.name} 
+                  className={`${category.color} border-0 cursor-pointer hover:scale-105 transition-transform`}
+                  onClick={() => handleCategoryClick(category.name)}
+                >
                   <CardContent className="p-4 text-center">
                     <div className="text-2xl mb-2">{category.icon}</div>
                     <h4 className="font-semibold text-white">{category.name}</h4>
