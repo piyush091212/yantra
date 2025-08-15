@@ -125,10 +125,10 @@ const Search = ({ searchQuery }) => {
     </div>
   );
 
-  const hasResults = filteredResults.songs.length > 0 || 
-                   filteredResults.artists.length > 0 || 
-                   filteredResults.albums.length > 0 || 
-                   filteredResults.playlists.length > 0;
+  const hasResults = searchResults.songs.length > 0 || 
+                   searchResults.artists.length > 0 || 
+                   searchResults.albums.length > 0 || 
+                   searchResults.playlists.length > 0;
 
   if (!searchQuery.trim()) {
     return (
