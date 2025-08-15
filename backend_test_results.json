@@ -3,126 +3,132 @@
     "test": "Health Check",
     "success": true,
     "message": "API is running: YantraTune API is running!",
-    "timestamp": "2025-08-15T22:36:26.414059"
+    "timestamp": "2025-08-15T22:37:37.593112"
   },
   {
     "test": "GET /artists",
     "success": true,
-    "message": "Retrieved 3 artists",
-    "timestamp": "2025-08-15T22:36:27.531830"
+    "message": "Retrieved 4 artists",
+    "timestamp": "2025-08-15T22:37:38.500813"
   },
   {
     "test": "POST /artists",
     "success": true,
     "message": "Created artist: Arijit Singh",
-    "timestamp": "2025-08-15T22:36:28.300941"
+    "timestamp": "2025-08-15T22:37:39.140946"
   },
   {
     "test": "GET /artists/{id}",
     "success": true,
     "message": "Retrieved artist: Arijit Singh",
-    "timestamp": "2025-08-15T22:36:29.058032"
+    "timestamp": "2025-08-15T22:37:39.418805"
   },
   {
     "test": "GET /albums",
     "success": true,
     "message": "Retrieved 2 albums",
-    "timestamp": "2025-08-15T22:36:29.809764"
+    "timestamp": "2025-08-15T22:37:39.754832"
   },
   {
     "test": "POST /albums",
-    "success": false,
-    "message": "Status: 400, Response: {\"detail\":\"Failed to create album\"}",
-    "timestamp": "2025-08-15T22:36:29.855887"
+    "success": true,
+    "message": "Created album: Tum Hi Ho",
+    "timestamp": "2025-08-15T22:37:41.026933"
+  },
+  {
+    "test": "GET /albums/{id}",
+    "success": true,
+    "message": "Retrieved album: Tum Hi Ho",
+    "timestamp": "2025-08-15T22:37:41.315214"
   },
   {
     "test": "GET /songs",
     "success": true,
-    "message": "Retrieved 5 songs",
-    "timestamp": "2025-08-15T22:36:30.190892"
+    "message": "Retrieved 6 songs",
+    "timestamp": "2025-08-15T22:37:42.080814"
   },
   {
     "test": "POST /songs",
     "success": true,
     "message": "Created song: Tum Hi Ho",
-    "timestamp": "2025-08-15T22:36:31.977231"
+    "timestamp": "2025-08-15T22:37:42.938886"
   },
   {
     "test": "GET /songs/{id}",
     "success": true,
     "message": "Retrieved song: Tum Hi Ho",
-    "timestamp": "2025-08-15T22:36:32.235350"
+    "timestamp": "2025-08-15T22:37:43.215801"
   },
   {
     "test": "GET /playlists",
     "success": true,
-    "message": "Retrieved 3 playlists",
-    "timestamp": "2025-08-15T22:36:33.409775"
+    "message": "Retrieved 4 playlists",
+    "timestamp": "2025-08-15T22:37:44.640775"
   },
   {
     "test": "POST /playlists",
     "success": true,
     "message": "Created playlist: Bollywood Hits",
-    "timestamp": "2025-08-15T22:36:35.033905"
+    "timestamp": "2025-08-15T22:37:45.764946"
   },
   {
     "test": "GET /playlists/{id}",
     "success": true,
     "message": "Retrieved playlist: Bollywood Hits",
-    "timestamp": "2025-08-15T22:36:36.020497"
+    "timestamp": "2025-08-15T22:37:46.315121"
   },
   {
     "test": "GET /songs/search",
     "success": true,
     "message": "Search returned results structure: ['songs', 'artists', 'albums', 'playlists']",
-    "timestamp": "2025-08-15T22:36:37.948004"
+    "timestamp": "2025-08-15T22:37:47.415114"
   },
   {
     "test": "GET /admin/stats",
     "success": true,
-    "message": "Stats: {'total_songs': 6, 'total_artists': 4, 'total_albums': 2, 'total_playlists': 4}",
-    "timestamp": "2025-08-15T22:36:39.484765"
+    "message": "Stats: {'total_songs': 7, 'total_artists': 5, 'total_albums': 3, 'total_playlists': 5}",
+    "timestamp": "2025-08-15T22:37:48.487023"
   },
   {
     "test": "GET /admin/logs",
     "success": true,
-    "message": "Retrieved 3 admin logs",
-    "timestamp": "2025-08-15T22:36:39.745380"
+    "message": "Retrieved 7 admin logs",
+    "timestamp": "2025-08-15T22:37:48.758047"
   },
   {
     "test": "Songs with Query Parameters",
     "success": true,
-    "message": "Retrieved 1 songs with genre filter",
-    "timestamp": "2025-08-15T22:36:40.537853"
+    "message": "Retrieved 2 songs with genre filter",
+    "timestamp": "2025-08-15T22:37:49.073757"
   },
   {
     "test": "Featured Playlists",
     "success": true,
     "message": "Retrieved 3 featured playlists",
-    "timestamp": "2025-08-15T22:36:42.387964"
+    "timestamp": "2025-08-15T22:37:50.772902"
   },
   {
     "test": "POST /playlists/{id}/songs",
     "success": true,
     "message": "Successfully added song to playlist",
-    "timestamp": "2025-08-15T22:36:44.706215"
+    "timestamp": "2025-08-15T22:37:52.228780"
   },
   {
     "test": "DELETE /playlists/{id}/songs/{song_id}",
     "success": true,
     "message": "Successfully removed song from playlist",
-    "timestamp": "2025-08-15T22:36:45.416848"
+    "timestamp": "2025-08-15T22:37:52.506570"
   },
   {
     "test": "404 Error Handling",
     "success": true,
     "message": "Properly returns 404 for non-existent song",
-    "timestamp": "2025-08-15T22:36:45.690370"
+    "timestamp": "2025-08-15T22:37:52.840078"
   },
   {
     "test": "Invalid Endpoint",
     "success": true,
     "message": "Properly returns 404 for invalid endpoint",
-    "timestamp": "2025-08-15T22:36:45.692930"
+    "timestamp": "2025-08-15T22:37:52.842688"
   }
 ]
