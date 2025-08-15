@@ -195,24 +195,24 @@ const Search = ({ searchQuery }) => {
 
           <TabsContent value="all" className="space-y-8">
             {/* Top Result */}
-            {filteredResults.songs.length > 0 && (
+            {searchResults.songs.length > 0 && (
               <section>
                 <h3 className="text-xl font-bold mb-4">Top result</h3>
                 <Card className="bg-zinc-800 border-zinc-700 p-6 max-w-md cursor-pointer hover:bg-zinc-700 transition-colors">
                   <div className="flex items-center space-x-4">
                     <img
-                      src={filteredResults.songs[0].coverUrl}
-                      alt={filteredResults.songs[0].title}
+                      src={searchResults.songs[0].coverUrl || searchResults.songs[0].cover_url}
+                      alt={searchResults.songs[0].title}
                       className="w-20 h-20 rounded-lg object-cover"
                     />
                     <div>
                       <h4 className="text-2xl font-bold text-white mb-1">
-                        {filteredResults.songs[0].title}
+                        {searchResults.songs[0].title}
                       </h4>
-                      <p className="text-zinc-400">{filteredResults.songs[0].artist}</p>
+                      <p className="text-zinc-400">{searchResults.songs[0].artist || searchResults.songs[0].artist?.name}</p>
                       <Button
                         className="mt-3 bg-green-500 hover:bg-green-600 text-white"
-                        onClick={() => handlePlaySong(filteredResults.songs[0])}
+                        onClick={() => handlePlaySong(searchResults.songs[0], searchResults.songs)}
                       >
                         <Play className="w-4 h-4 mr-2" />
                         Play
@@ -224,11 +224,11 @@ const Search = ({ searchQuery }) => {
             )}
 
             {/* Songs */}
-            {filteredResults.songs.length > 0 && (
+            {searchResults.songs.length > 0 && (
               <section>
                 <h3 className="text-xl font-bold mb-4">Songs</h3>
                 <div className="space-y-2">
-                  {filteredResults.songs.slice(0, 5).map((song) => (
+                  {searchResults.songs.slice(0, 5).map((song) => (
                     <SongRow key={song.id} song={song} />
                   ))}
                 </div>
@@ -236,11 +236,11 @@ const Search = ({ searchQuery }) => {
             )}
 
             {/* Artists */}
-            {filteredResults.artists.length > 0 && (
+            {searchResults.artists.length > 0 && (
               <section>
                 <h3 className="text-xl font-bold mb-4">Artists</h3>
                 <div className="space-y-4">
-                  {filteredResults.artists.map((artist) => (
+                  {searchResults.artists.map((artist) => (
                     <ArtistCard key={artist.id} artist={artist} />
                   ))}
                 </div>
@@ -250,7 +250,7 @@ const Search = ({ searchQuery }) => {
 
           <TabsContent value="songs">
             <div className="space-y-2">
-              {filteredResults.songs.map((song) => (
+              {searchResults.songs.map((song) => (
                 <SongRow key={song.id} song={song} />
               ))}
             </div>
@@ -258,7 +258,7 @@ const Search = ({ searchQuery }) => {
 
           <TabsContent value="artists">
             <div className="space-y-4">
-              {filteredResults.artists.map((artist) => (
+              {searchResults.artists.map((artist) => (
                 <ArtistCard key={artist.id} artist={artist} />
               ))}
             </div>
@@ -266,7 +266,7 @@ const Search = ({ searchQuery }) => {
 
           <TabsContent value="albums">
             <div className="space-y-4">
-              {filteredResults.albums.map((album) => (
+              {searchResults.albums.map((album) => (
                 <AlbumCard key={album.id} album={album} />
               ))}
             </div>
