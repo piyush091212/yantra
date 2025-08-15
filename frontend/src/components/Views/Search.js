@@ -6,13 +6,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { usePlayer } from '../../context/PlayerContext';
 import { useSearch } from '../../hooks/useMusic';
 
-const Search = ({ searchQuery }) => {
+const Search = ({ searchQuery, setSearchQuery, onNavigate }) => {
   const { playSong, currentSong, isPlaying } = usePlayer();
   const [activeTab, setActiveTab] = useState('all');
   const { searchResults, loading } = useSearch(searchQuery);
 
   const handlePlaySong = (song, songList = []) => {
     playSong(song, songList.length > 0 ? songList : searchResults.songs);
+  };
+
+  const handleCategoryClick = (categoryName) => {
+    setSearchQuery(categoryName.toLowerCase());
   };
 
   const SongRow = ({ song }) => {
