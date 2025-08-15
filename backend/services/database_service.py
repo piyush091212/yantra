@@ -91,7 +91,12 @@ class DatabaseService:
 
     async def create_album(self, album: AlbumCreate) -> Optional[Album]:
         try:
-            result = self.supabase_admin.table("albums").insert(album.model_dump()).execute()
+            album_data = album.model_dump()
+            # Convert date to string if present
+            if album_data.get('release_date'):
+                album_data['release_date'] = album_data['release_date'].isoformat()
+            
+            result = self.supabase_admin.table("albums").insert(album_data).execute()
             if result.data:
                 return await self.get_album_by_id(result.data[0]['id'])
             return None
