@@ -26,7 +26,11 @@ function App() {
       case 'home':
         return <Home />;
       case 'search':
-        return <Search searchQuery={searchQuery} />;
+        return <Search 
+          searchQuery={searchQuery} 
+          setSearchQuery={setSearchQuery}
+          onNavigate={handleNavigate}
+        />;
       case 'library':
         return <Library />;
       case 'admin':
