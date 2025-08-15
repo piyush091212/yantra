@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Play, Clock, User, Disc, ListMusic } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { usePlayer } from '../../context/PlayerContext';
-import { mockSongs, mockArtists, mockAlbums, mockPlaylists } from '../../data/mock';
+import { useSearch } from '../../hooks/useMusic';
 
 const Search = ({ searchQuery }) => {
   const { playSong, currentSong, isPlaying } = usePlayer();
