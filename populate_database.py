@@ -10,7 +10,7 @@ import sys
 import time
 
 # Backend URL from environment
-BACKEND_URL = "https://dj36kcua08ir5.cloudfront.net"
+BACKEND_URL = "https://flicker-fix.preview.emergentagent.com"
 API = f"{BACKEND_URL}/api"
 
 def check_backend_health():
