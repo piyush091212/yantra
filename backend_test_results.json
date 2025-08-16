@@ -3,216 +3,216 @@
     "test": "Health Check",
     "success": true,
     "message": "API is running: YantraTune API is running!",
-    "timestamp": "2025-08-16T16:52:08.109462"
+    "timestamp": "2025-08-16T17:01:39.812476"
   },
   {
     "test": "GET /artists/",
     "success": true,
-    "message": "Retrieved 18 artists",
-    "timestamp": "2025-08-16T16:52:09.774403"
+    "message": "Retrieved 19 artists",
+    "timestamp": "2025-08-16T17:01:40.276647"
   },
   {
     "test": "POST /artists/",
     "success": true,
     "message": "Created artist: Arijit Singh",
-    "timestamp": "2025-08-16T16:52:11.476605"
+    "timestamp": "2025-08-16T17:01:41.760490"
   },
   {
     "test": "GET /artists/{id}",
     "success": true,
     "message": "Retrieved artist: Arijit Singh",
-    "timestamp": "2025-08-16T16:52:12.224093"
+    "timestamp": "2025-08-16T17:01:42.496753"
   },
   {
     "test": "GET /albums/",
     "success": true,
-    "message": "Retrieved 9 albums",
-    "timestamp": "2025-08-16T16:52:12.949281"
+    "message": "Retrieved 10 albums",
+    "timestamp": "2025-08-16T17:01:42.774790"
   },
   {
     "test": "POST /albums/",
     "success": true,
     "message": "Created album: Tum Hi Ho",
-    "timestamp": "2025-08-16T16:52:15.166694"
+    "timestamp": "2025-08-16T17:01:43.566316"
   },
   {
     "test": "GET /albums/{id}",
     "success": true,
     "message": "Retrieved album: Tum Hi Ho",
-    "timestamp": "2025-08-16T16:52:15.959552"
+    "timestamp": "2025-08-16T17:01:43.842108"
   },
   {
     "test": "GET /songs/",
     "success": true,
-    "message": "Retrieved 21 songs",
-    "timestamp": "2025-08-16T16:52:16.777249"
+    "message": "Retrieved 24 songs",
+    "timestamp": "2025-08-16T17:01:44.559203"
   },
   {
     "test": "POST /songs/",
     "success": true,
     "message": "Created song: Tum Hi Ho",
-    "timestamp": "2025-08-16T16:52:18.580602"
+    "timestamp": "2025-08-16T17:01:45.412153"
   },
   {
     "test": "GET /songs/{id}",
     "success": true,
     "message": "Retrieved song: Tum Hi Ho",
-    "timestamp": "2025-08-16T16:52:19.363124"
+    "timestamp": "2025-08-16T17:01:45.747320"
   },
   {
     "test": "GET /playlists/",
     "success": true,
-    "message": "Retrieved 17 playlists",
-    "timestamp": "2025-08-16T16:52:29.183813"
+    "message": "Retrieved 18 playlists",
+    "timestamp": "2025-08-16T17:01:51.047671"
   },
   {
     "test": "POST /playlists/",
     "success": true,
     "message": "Created playlist: Bollywood Hits",
-    "timestamp": "2025-08-16T16:52:31.364340"
+    "timestamp": "2025-08-16T17:01:53.224832"
   },
   {
     "test": "GET /playlists/{id}",
     "success": true,
     "message": "Retrieved playlist: Bollywood Hits",
-    "timestamp": "2025-08-16T16:52:31.941138"
+    "timestamp": "2025-08-16T17:01:53.794821"
   },
   {
     "test": "POST /uploads/audio",
     "success": true,
     "message": "Audio upload successful: Audio file uploaded successfully",
-    "timestamp": "2025-08-16T16:52:33.121117"
+    "timestamp": "2025-08-16T17:01:54.811725"
   },
   {
     "test": "POST /uploads/image",
     "success": true,
     "message": "Image upload successful: Cover image uploaded successfully",
-    "timestamp": "2025-08-16T16:52:33.965210"
+    "timestamp": "2025-08-16T17:01:55.759801"
   },
   {
     "test": "Audio Upload Validation",
     "success": true,
     "message": "Properly rejects non-audio files",
-    "timestamp": "2025-08-16T16:52:33.984462"
+    "timestamp": "2025-08-16T17:01:55.781868"
   },
   {
     "test": "POST /songs/upload (with files)",
     "success": true,
     "message": "Created song with files: Kal Ho Naa Ho",
-    "timestamp": "2025-08-16T16:52:37.025619"
+    "timestamp": "2025-08-16T17:01:58.841570"
   },
   {
     "test": "Song File URLs",
     "success": true,
     "message": "Song created with proper file URLs",
-    "timestamp": "2025-08-16T16:52:37.025660"
+    "timestamp": "2025-08-16T17:01:58.841615"
   },
   {
     "test": "POST /songs/upload (audio only)",
     "success": true,
     "message": "Created song without cover: Tere Naam",
-    "timestamp": "2025-08-16T16:52:39.203062"
+    "timestamp": "2025-08-16T17:02:01.395322"
   },
   {
     "test": "GET /users/{id}/preferences",
     "success": true,
     "message": "Retrieved user preferences: test_user_123",
-    "timestamp": "2025-08-16T16:52:39.289197"
+    "timestamp": "2025-08-16T17:02:01.420006"
   },
   {
     "test": "POST /users/{id}/like-song/{song_id}",
     "success": true,
     "message": "Song like toggled: Song liked successfully",
-    "timestamp": "2025-08-16T16:52:39.329669"
+    "timestamp": "2025-08-16T17:02:01.563358"
   },
   {
     "test": "Song Like Toggle",
     "success": true,
     "message": "Song like/unlike toggle working correctly",
-    "timestamp": "2025-08-16T16:52:39.353301"
+    "timestamp": "2025-08-16T17:02:01.586492"
   },
   {
     "test": "POST /users/{id}/follow-artist/{artist_id}",
     "success": true,
     "message": "Artist follow toggled: Artist followed successfully",
-    "timestamp": "2025-08-16T16:52:39.415736"
+    "timestamp": "2025-08-16T17:02:01.649732"
   },
   {
     "test": "POST /users/{id}/save-album/{album_id}",
     "success": true,
     "message": "Album save toggled: Album saved successfully",
-    "timestamp": "2025-08-16T16:52:39.438115"
+    "timestamp": "2025-08-16T17:02:01.675380"
   },
   {
     "test": "GET /users/{id}/liked-songs",
     "success": true,
     "message": "Retrieved 0 liked songs",
-    "timestamp": "2025-08-16T16:52:39.460325"
+    "timestamp": "2025-08-16T17:02:01.739303"
   },
   {
     "test": "GET /users/{id}/followed-artists",
     "success": true,
-    "message": "Retrieved 1 followed artists",
-    "timestamp": "2025-08-16T16:52:39.481305"
+    "message": "Retrieved 2 followed artists",
+    "timestamp": "2025-08-16T17:02:01.800513"
   },
   {
     "test": "GET /users/{id}/saved-albums",
     "success": true,
-    "message": "Retrieved 1 saved albums",
-    "timestamp": "2025-08-16T16:52:39.503071"
+    "message": "Retrieved 2 saved albums",
+    "timestamp": "2025-08-16T17:02:01.822798"
   },
   {
     "test": "GET /songs/search",
     "success": true,
     "message": "Search returned results structure: ['songs', 'artists', 'albums', 'playlists']",
-    "timestamp": "2025-08-16T16:52:41.583817"
+    "timestamp": "2025-08-16T17:02:02.866339"
   },
   {
     "test": "GET /admin/stats",
     "success": true,
-    "message": "Stats: {'total_songs': 24, 'total_artists': 19, 'total_albums': 10, 'total_playlists': 18}",
-    "timestamp": "2025-08-16T16:52:43.097795"
+    "message": "Stats: {'total_songs': 27, 'total_artists': 20, 'total_albums': 11, 'total_playlists': 19}",
+    "timestamp": "2025-08-16T17:02:03.880229"
   },
   {
     "test": "GET /admin/logs",
     "success": true,
-    "message": "Retrieved 65 admin logs",
-    "timestamp": "2025-08-16T16:52:43.408822"
+    "message": "Retrieved 71 admin logs",
+    "timestamp": "2025-08-16T17:02:04.187184"
   },
   {
     "test": "Songs with Query Parameters",
     "success": true,
     "message": "Retrieved 10 songs with genre filter",
-    "timestamp": "2025-08-16T16:52:43.716138"
+    "timestamp": "2025-08-16T17:02:04.480162"
   },
   {
     "test": "Featured Playlists",
     "success": true,
     "message": "Retrieved 3 featured playlists",
-    "timestamp": "2025-08-16T16:52:50.962738"
+    "timestamp": "2025-08-16T17:02:09.575796"
   },
   {
     "test": "POST /playlists/{id}/songs",
     "success": true,
     "message": "Successfully added song to playlist",
-    "timestamp": "2025-08-16T16:52:52.870501"
+    "timestamp": "2025-08-16T17:02:10.958778"
   },
   {
     "test": "DELETE /playlists/{id}/songs/{song_id}",
     "success": true,
     "message": "Successfully removed song from playlist",
-    "timestamp": "2025-08-16T16:52:53.471265"
+    "timestamp": "2025-08-16T17:02:11.362345"
   },
   {
     "test": "404 Error Handling",
     "success": true,
     "message": "Properly returns 404 for non-existent song",
-    "timestamp": "2025-08-16T16:52:53.763959"
+    "timestamp": "2025-08-16T17:02:11.673247"
   },
   {
     "test": "Invalid Endpoint",
     "success": true,
     "message": "Properly returns 404 for invalid endpoint",
-    "timestamp": "2025-08-16T16:52:53.784557"
+    "timestamp": "2025-08-16T17:02:11.697392"
   }
 ]
