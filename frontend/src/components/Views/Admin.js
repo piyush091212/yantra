@@ -1218,7 +1218,7 @@ const Admin = () => {
                   id="editPlaylistCover"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setPlaylistForm({...playlistForm, coverImage: e.target.files[0]})}
+                  onChange={(e) => handlePlaylistFormChange('coverImage', e.target.files[0])}
                   className="bg-zinc-800 border-zinc-700 text-white"
                 />
               </div>
