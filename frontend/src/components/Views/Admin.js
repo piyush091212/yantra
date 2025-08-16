@@ -742,7 +742,7 @@ const Admin = () => {
             <Input
               id="duration"
               value={songForm.duration}
-              onChange={(e) => setSongForm({...songForm, duration: e.target.value})}
+              onChange={(e) => handleSongFormChange('duration', e.target.value)}
               className="bg-zinc-800 border-zinc-700 text-white"
               placeholder="e.g. 3:25"
             />
