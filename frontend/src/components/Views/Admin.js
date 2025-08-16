@@ -919,7 +919,7 @@ const Admin = () => {
               id="releaseDate"
               type="date"
               value={albumForm.releaseDate}
-              onChange={(e) => setAlbumForm({...albumForm, releaseDate: e.target.value})}
+              onChange={(e) => handleAlbumFormChange('releaseDate', e.target.value)}
               className="bg-zinc-800 border-zinc-700 text-white"
             />
           </div>
