@@ -224,15 +224,15 @@ class YantraTuneAPITester:
         """Test Playlists CRUD operations"""
         # Test GET all playlists
         try:
-            response = requests.get(f"{self.base_url}/playlists")
+            response = requests.get(f"{self.base_url}/playlists/")
             if response.status_code == 200:
                 playlists = response.json()
-                self.log_test("GET /playlists", True, f"Retrieved {len(playlists)} playlists")
+                self.log_test("GET /playlists/", True, f"Retrieved {len(playlists)} playlists")
             else:
-                self.log_test("GET /playlists", False, f"Status: {response.status_code}")
+                self.log_test("GET /playlists/", False, f"Status: {response.status_code}")
                 return False
         except Exception as e:
-            self.log_test("GET /playlists", False, f"Error: {str(e)}")
+            self.log_test("GET /playlists/", False, f"Error: {str(e)}")
             return False
 
         # Test POST create playlist
@@ -243,11 +243,11 @@ class YantraTuneAPITester:
         }
         
         try:
-            response = requests.post(f"{self.base_url}/playlists", json=playlist_data)
+            response = requests.post(f"{self.base_url}/playlists/", json=playlist_data)
             if response.status_code == 200:
                 playlist = response.json()
                 self.created_entities['playlists'].append(playlist['id'])
-                self.log_test("POST /playlists", True, f"Created playlist: {playlist['name']}")
+                self.log_test("POST /playlists/", True, f"Created playlist: {playlist['name']}")
                 
                 # Test GET specific playlist
                 response = requests.get(f"{self.base_url}/playlists/{playlist['id']}")
@@ -258,10 +258,10 @@ class YantraTuneAPITester:
                     
                 return True
             else:
-                self.log_test("POST /playlists", False, f"Status: {response.status_code}, Response: {response.text}")
+                self.log_test("POST /playlists/", False, f"Status: {response.status_code}, Response: {response.text}")
                 return False
         except Exception as e:
-            self.log_test("POST /playlists", False, f"Error: {str(e)}")
+            self.log_test("POST /playlists/", False, f"Error: {str(e)}")
             return False
 
     def test_search_functionality(self):
