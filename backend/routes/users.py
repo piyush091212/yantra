@@ -5,12 +5,16 @@ from datetime import datetime
 import os
 from bson import ObjectId
 from models.models import User, UserPreferences, UserAction, Song, Artist, Album, Playlist
-from services.database_service import get_database
 
 router = APIRouter(prefix="/users", tags=["users"])
 
+# MongoDB connection
+mongo_url = os.environ['MONGO_URL']
+client = AsyncIOMotorClient(mongo_url)
+db = client[os.environ['DB_NAME']]
+
 async def get_db():
-    return get_database()
+    return db
 
 @router.get("/{user_id}/preferences", response_model=UserPreferences)
 async def get_user_preferences(user_id: str, db=Depends(get_db)):
