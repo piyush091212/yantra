@@ -773,7 +773,7 @@ const Admin = () => {
               id="audioFile"
               type="file"
               accept="audio/*"
-              onChange={(e) => setSongForm({...songForm, audioFile: e.target.files[0]})}
+              onChange={(e) => handleSongFormChange('audioFile', e.target.files[0])}
               className="bg-zinc-800 border-zinc-700 text-white"
               required
             />
