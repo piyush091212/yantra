@@ -83,6 +83,58 @@ async def create_song(song: SongCreate):
         logger.error(f"Error creating song: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
+@router.post("/upload", response_model=Song)
+async def create_song_with_files(
+    title: str = Form(...),
+    artist_id: str = Form(...),
+    album_id: str = Form(None),
+    duration: str = Form(None),
+    genre: str = Form(None),
+    audio_file: UploadFile = File(...),
+    cover_image: UploadFile = File(None)
+):
+    """Create a new song with file uploads (admin only)"""
+    try:
+        # Upload audio file
+        audio_url = await storage_service.upload_audio_file(audio_file)
+        
+        # Upload cover image if provided
+        cover_url = None
+        if cover_image and cover_image.filename:
+            cover_url = await storage_service.upload_cover_image(cover_image)
+        
+        # Create song object
+        song_data = SongCreate(
+            title=title,
+            artist_id=artist_id,
+            album_id=album_id,
+            duration=duration,
+            genre=genre,
+            audio_url=audio_url,
+            cover_url=cover_url
+        )
+        
+        # Create the song in database
+        new_song = await db_service.create_song(song_data)
+        if not new_song:
+            raise HTTPException(status_code=400, detail="Failed to create song")
+        
+        # Log the admin action
+        log = AdminLogCreate(
+            action="add",
+            entity_type="song",
+            entity_id=new_song.id,
+            entity_name=new_song.title
+        )
+        await db_service.log_admin_action(log)
+        
+        return new_song
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating song with files: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
 @router.put("/{song_id}", response_model=Song)
 async def update_song(song_id: str, song: SongUpdate):
     """Update a song (admin only)"""
