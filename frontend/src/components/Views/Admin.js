@@ -1137,7 +1137,7 @@ const Admin = () => {
                   id="editArtistAvatar"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setArtistForm({...artistForm, avatarImage: e.target.files[0]})}
+                  onChange={(e) => handleArtistFormChange('avatarImage', e.target.files[0])}
                   className="bg-zinc-800 border-zinc-700 text-white"
                 />
               </div>
