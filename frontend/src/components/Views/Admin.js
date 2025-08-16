@@ -1639,10 +1639,10 @@ const Admin = () => {
           </TabsContent>
         </Tabs>
 
-        <AddSongDialog />
-        <AddArtistDialog />
-        <AddAlbumDialog />
-        <AddPlaylistDialog />
+        {AddSongDialog}
+        {AddArtistDialog}
+        {AddAlbumDialog}
+        {AddPlaylistDialog}
         <EditDialog />
       </div>
     </div>
