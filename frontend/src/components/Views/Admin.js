@@ -709,7 +709,7 @@ const Admin = () => {
             <Input
               id="title"
               value={songForm.title}
-              onChange={(e) => setSongForm({...songForm, title: e.target.value})}
+              onChange={(e) => handleSongFormChange('title', e.target.value)}
               className="bg-zinc-800 border-zinc-700 text-white"
               placeholder="Enter song title"
               required
