@@ -49,9 +49,21 @@ const Admin = () => {
     name: '', description: '', coverImage: null
   });
 
-  // Load data on component mount
-  useEffect(() => {
-    loadAllData();
+  // Optimized form change handlers using functional updates to prevent re-renders
+  const handleSongFormChange = useCallback((field, value) => {
+    setSongForm(prev => ({...prev, [field]: value}));
+  }, []);
+
+  const handleArtistFormChange = useCallback((field, value) => {
+    setArtistForm(prev => ({...prev, [field]: value}));
+  }, []);
+
+  const handleAlbumFormChange = useCallback((field, value) => {
+    setAlbumForm(prev => ({...prev, [field]: value}));
+  }, []);
+
+  const handlePlaylistFormChange = useCallback((field, value) => {
+    setPlaylistForm(prev => ({...prev, [field]: value}));
   }, []);
 
   const loadAllData = async () => {
