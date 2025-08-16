@@ -1009,7 +1009,7 @@ const Admin = () => {
         <div className="flex justify-end space-x-2 mt-4">
           <Button
             variant="outline"
-            onClick={() => setPlaylistDialogOpen(false)}
+            onClick={() => setIsPlaylistDialogOpen(false)}
             className="border-zinc-700 text-white hover:text-white"
             disabled={isSaving}
           >
