@@ -137,7 +137,7 @@ const Admin = () => {
   );
 
   const AddSongDialog = () => (
-    <Dialog open={isAddDialogOpen && activeTab === 'songs'} onOpenChange={setIsAddDialogOpen}>
+    <Dialog open={isSongDialogOpen} onOpenChange={setIsSongDialogOpen}>
       <DialogContent className="bg-zinc-900 border-zinc-700 text-white max-w-2xl">
         <DialogHeader>
           <DialogTitle>Add New Song</DialogTitle>
@@ -194,30 +194,30 @@ const Admin = () => {
             />
           </div>
           <div>
-            <Label htmlFor="coverUrl">Cover Image URL</Label>
+            <Label htmlFor="coverImage">Cover Image</Label>
             <Input
-              id="coverUrl"
-              value={songForm.coverUrl}
-              onChange={(e) => setSongForm({...songForm, coverUrl: e.target.value})}
+              id="coverImage"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setSongForm({...songForm, coverImage: e.target.files[0]})}
               className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter image URL"
             />
           </div>
           <div className="md:col-span-2">
-            <Label htmlFor="audioUrl">Audio File URL</Label>
+            <Label htmlFor="audioFile">Audio File</Label>
             <Input
-              id="audioUrl"
-              value={songForm.audioUrl}
-              onChange={(e) => setSongForm({...songForm, audioUrl: e.target.value})}
+              id="audioFile"
+              type="file"
+              accept="audio/*"
+              onChange={(e) => setSongForm({...songForm, audioFile: e.target.files[0]})}
               className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter audio file URL"
             />
           </div>
         </div>
         <div className="flex justify-end space-x-2 mt-4">
           <Button
             variant="outline"
-            onClick={() => setIsAddDialogOpen(false)}
+            onClick={() => setIsSongDialogOpen(false)}
             className="border-zinc-700 text-white hover:text-white"
           >
             <X className="w-4 h-4 mr-2" />
