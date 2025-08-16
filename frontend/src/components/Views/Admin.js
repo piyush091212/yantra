@@ -834,7 +834,7 @@ const Admin = () => {
             <Textarea
               id="artistBio"
               value={artistForm.bio}
-              onChange={(e) => setArtistForm({...artistForm, bio: e.target.value})}
+              onChange={(e) => handleArtistFormChange('bio', e.target.value)}
               className="bg-zinc-800 border-zinc-700 text-white"
               placeholder="Enter artist biography"
               rows={3}
