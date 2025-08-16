@@ -732,7 +732,7 @@ const Admin = () => {
             <Input
               id="album_id"
               value={songForm.album_id}
-              onChange={(e) => setSongForm({...songForm, album_id: e.target.value})}
+              onChange={(e) => handleSongFormChange('album_id', e.target.value)}
               className="bg-zinc-800 border-zinc-700 text-white"
               placeholder="Enter album ID (optional)"
             />
