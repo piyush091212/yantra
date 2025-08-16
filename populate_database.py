@@ -269,12 +269,12 @@ def create_playlists():
     for playlist_data in playlists_data:
         try:
             response = requests.post(f"{API}/playlists", json=playlist_data, timeout=10)
-            if response.status_code == 201:
+            if response.status_code in [200, 201]:
                 playlist = response.json()
                 created_playlists.append(playlist)
                 print(f"✅ Created playlist: {playlist['name']} (ID: {playlist['id']})")
             else:
-                print(f"❌ Failed to create playlist {playlist_data['name']}: {response.text}")
+                print(f"❌ Failed to create playlist {playlist_data['name']}: Status {response.status_code} - {response.text}")
         except Exception as e:
             print(f"❌ Error creating playlist {playlist_data['name']}: {e}")
     
