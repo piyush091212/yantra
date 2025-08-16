@@ -49,22 +49,207 @@ const Admin = () => {
     name: '', description: '', coverImage: null
   });
 
-  // Optimized form change handlers using functional updates to prevent re-renders
-  const handleSongFormChange = useCallback((field, value) => {
-    setSongForm(prev => ({...prev, [field]: value}));
-  }, []);
+  // Memoized form components to prevent re-rendering during typing
+  const ArtistFormFields = React.memo(({ form, onChange }) => (
+    <div className="space-y-4">
+      <div>
+        <Label htmlFor="artistName">Artist Name *</Label>
+        <Input
+          id="artistName"
+          value={form.name}
+          onChange={(e) => onChange('name', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter artist name"
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="artistBio">Biography</Label>
+        <Textarea
+          id="artistBio"
+          value={form.bio}
+          onChange={(e) => onChange('bio', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter artist biography"
+          rows={3}
+        />
+      </div>
+      <div>
+        <Label htmlFor="artistAvatar">Artist Photo</Label>
+        <Input
+          id="artistAvatar"
+          type="file"
+          accept="image/*"
+          onChange={(e) => onChange('avatarImage', e.target.files[0])}
+          className="bg-zinc-800 border-zinc-700 text-white"
+        />
+      </div>
+    </div>
+  ));
 
-  const handleArtistFormChange = useCallback((field, value) => {
-    setArtistForm(prev => ({...prev, [field]: value}));
-  }, []);
+  const SongFormFields = React.memo(({ form, onChange, artists }) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+      <div>
+        <Label htmlFor="title">Song Title *</Label>
+        <Input
+          id="title"
+          value={form.title}
+          onChange={(e) => onChange('title', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter song title"
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="artist_id">Artist ID *</Label>
+        <Input
+          id="artist_id"
+          value={form.artist_id}
+          onChange={(e) => onChange('artist_id', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter artist ID"
+          required
+        />
+        <p className="text-xs text-zinc-500 mt-1">Available artists: {artists.map(a => `${a.name} (${a.id.slice(0, 8)}...)`).join(', ')}</p>
+      </div>
+      <div>
+        <Label htmlFor="album_id">Album ID (Optional)</Label>
+        <Input
+          id="album_id"
+          value={form.album_id}
+          onChange={(e) => onChange('album_id', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter album ID (optional)"
+        />
+      </div>
+      <div>
+        <Label htmlFor="duration">Duration</Label>
+        <Input
+          id="duration"
+          value={form.duration}
+          onChange={(e) => onChange('duration', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="e.g. 3:25"
+        />
+      </div>
+      <div>
+        <Label htmlFor="genre">Genre</Label>
+        <Input
+          id="genre"
+          value={form.genre}
+          onChange={(e) => onChange('genre', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter genre"
+        />
+      </div>
+      <div>
+        <Label htmlFor="coverImage">Cover Image</Label>
+        <Input
+          id="coverImage"
+          type="file"
+          accept="image/*"
+          onChange={(e) => onChange('coverImage', e.target.files[0])}
+          className="bg-zinc-800 border-zinc-700 text-white"
+        />
+      </div>
+      <div className="md:col-span-2">
+        <Label htmlFor="audioFile">Audio File *</Label>
+        <Input
+          id="audioFile"
+          type="file"
+          accept="audio/*"
+          onChange={(e) => onChange('audioFile', e.target.files[0])}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          required
+        />
+      </div>
+    </div>
+  ));
 
-  const handleAlbumFormChange = useCallback((field, value) => {
-    setAlbumForm(prev => ({...prev, [field]: value}));
-  }, []);
+  const AlbumFormFields = React.memo(({ form, onChange, artists }) => (
+    <div className="space-y-4">
+      <div>
+        <Label htmlFor="albumTitle">Album Title *</Label>
+        <Input
+          id="albumTitle"
+          value={form.title}
+          onChange={(e) => onChange('title', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter album title"
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="albumArtistId">Artist ID *</Label>
+        <Input
+          id="albumArtistId"
+          value={form.artist_id}
+          onChange={(e) => onChange('artist_id', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter artist ID"
+          required
+        />
+        <p className="text-xs text-zinc-500 mt-1">Available artists: {artists.map(a => `${a.name} (${a.id.slice(0, 8)}...)`).join(', ')}</p>
+      </div>
+      <div>
+        <Label htmlFor="releaseDate">Release Date</Label>
+        <Input
+          id="releaseDate"
+          type="date"
+          value={form.releaseDate}
+          onChange={(e) => onChange('releaseDate', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+        />
+      </div>
+      <div>
+        <Label htmlFor="albumCover">Album Cover</Label>
+        <Input
+          id="albumCover"
+          type="file"
+          accept="image/*"
+          onChange={(e) => onChange('coverImage', e.target.files[0])}
+          className="bg-zinc-800 border-zinc-700 text-white"
+        />
+      </div>
+    </div>
+  ));
 
-  const handlePlaylistFormChange = useCallback((field, value) => {
-    setPlaylistForm(prev => ({...prev, [field]: value}));
-  }, []);
+  const PlaylistFormFields = React.memo(({ form, onChange }) => (
+    <div className="space-y-4">
+      <div>
+        <Label htmlFor="playlistName">Playlist Name *</Label>
+        <Input
+          id="playlistName"
+          value={form.name}
+          onChange={(e) => onChange('name', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter playlist name"
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="playlistDescription">Description</Label>
+        <Textarea
+          id="playlistDescription"
+          value={form.description}
+          onChange={(e) => onChange('description', e.target.value)}
+          className="bg-zinc-800 border-zinc-700 text-white"
+          placeholder="Enter playlist description"
+          rows={3}
+        />
+      </div>
+      <div>
+        <Label htmlFor="playlistCover">Playlist Cover</Label>
+        <Input
+          id="playlistCover"
+          type="file"
+          accept="image/*"
+          onChange={(e) => onChange('coverImage', e.target.files[0])}
+          className="bg-zinc-800 border-zinc-700 text-white"
+        />
+      </div>
+    </div>
+  ));
 
   // Load data on component mount
   useEffect(() => {
