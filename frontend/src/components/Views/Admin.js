@@ -982,7 +982,7 @@ const Admin = () => {
         </div>
       </DialogContent>
     </Dialog>
-  ), [isArtistDialogOpen, artistForm, isSaving, handleArtistFormChange]);
+  ), [isArtistDialogOpen, isSaving]);
 
   const AddAlbumDialog = useMemo(() => (
     <Dialog open={isAlbumDialogOpen} onOpenChange={setIsAlbumDialogOpen}>
