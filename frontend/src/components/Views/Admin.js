@@ -1151,7 +1151,7 @@ const Admin = () => {
                 <Input
                   id="editAlbumTitle"
                   value={albumForm.title}
-                  onChange={(e) => setAlbumForm({...albumForm, title: e.target.value})}
+                  onChange={(e) => handleAlbumFormChange('title', e.target.value)}
                   className="bg-zinc-800 border-zinc-700 text-white"
                   placeholder="Enter album title"
                 />
