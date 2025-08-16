@@ -13,21 +13,27 @@ import { mockSongs, mockArtists, mockAlbums, mockPlaylists } from '../../data/mo
 const Admin = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('overview');
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  
+  // Separate modal states for each type
+  const [isSongDialogOpen, setIsSongDialogOpen] = useState(false);
+  const [isArtistDialogOpen, setIsArtistDialogOpen] = useState(false);
+  const [isAlbumDialogOpen, setIsAlbumDialogOpen] = useState(false);
+  const [isPlaylistDialogOpen, setIsPlaylistDialogOpen] = useState(false);
+  
   const [editingItem, setEditingItem] = useState(null);
   
   // Form states
   const [songForm, setSongForm] = useState({
-    title: '', artist: '', album: '', duration: '', genre: '', audioUrl: '', coverUrl: ''
+    title: '', artist: '', album: '', duration: '', genre: '', audioFile: null, coverImage: null
   });
   const [artistForm, setArtistForm] = useState({
-    name: '', bio: '', avatarUrl: ''
+    name: '', bio: '', avatarImage: null
   });
   const [albumForm, setAlbumForm] = useState({
-    title: '', artist: '', coverUrl: '', releaseDate: ''
+    title: '', artist: '', coverImage: null, releaseDate: ''
   });
   const [playlistForm, setPlaylistForm] = useState({
-    name: '', description: '', coverUrl: ''
+    name: '', description: '', coverImage: null
   });
 
   const handleSaveSong = () => {
