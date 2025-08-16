@@ -1025,7 +1025,7 @@ const Admin = () => {
         </div>
       </DialogContent>
     </Dialog>
-  ), [isAlbumDialogOpen, albumForm, artists, isSaving, handleAlbumFormChange]);
+  ), [isAlbumDialogOpen, artists, isSaving]);
 
   const AddPlaylistDialog = useMemo(() => (
     <Dialog open={isPlaylistDialogOpen} onOpenChange={setIsPlaylistDialogOpen}>
