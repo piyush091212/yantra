@@ -3,132 +3,108 @@
     "test": "Health Check",
     "success": true,
     "message": "API is running: YantraTune API is running!",
-    "timestamp": "2025-08-15T22:37:37.593112"
+    "timestamp": "2025-08-16T12:45:23.922982"
   },
   {
     "test": "GET /artists",
     "success": true,
-    "message": "Retrieved 4 artists",
-    "timestamp": "2025-08-15T22:37:38.500813"
+    "message": "Retrieved 5 artists",
+    "timestamp": "2025-08-16T12:45:24.876562"
   },
   {
     "test": "POST /artists",
-    "success": true,
-    "message": "Created artist: Arijit Singh",
-    "timestamp": "2025-08-15T22:37:39.140946"
+    "success": false,
+    "message": "Error: list indices must be integers or slices, not str",
+    "timestamp": "2025-08-16T12:45:25.654114"
   },
   {
-    "test": "GET /artists/{id}",
-    "success": true,
-    "message": "Retrieved artist: Arijit Singh",
-    "timestamp": "2025-08-15T22:37:39.418805"
+    "test": "Albums CRUD",
+    "success": false,
+    "message": "No artists available for album creation",
+    "timestamp": "2025-08-16T12:45:25.654377"
   },
   {
-    "test": "GET /albums",
-    "success": true,
-    "message": "Retrieved 2 albums",
-    "timestamp": "2025-08-15T22:37:39.754832"
-  },
-  {
-    "test": "POST /albums",
-    "success": true,
-    "message": "Created album: Tum Hi Ho",
-    "timestamp": "2025-08-15T22:37:41.026933"
-  },
-  {
-    "test": "GET /albums/{id}",
-    "success": true,
-    "message": "Retrieved album: Tum Hi Ho",
-    "timestamp": "2025-08-15T22:37:41.315214"
-  },
-  {
-    "test": "GET /songs",
-    "success": true,
-    "message": "Retrieved 6 songs",
-    "timestamp": "2025-08-15T22:37:42.080814"
-  },
-  {
-    "test": "POST /songs",
-    "success": true,
-    "message": "Created song: Tum Hi Ho",
-    "timestamp": "2025-08-15T22:37:42.938886"
-  },
-  {
-    "test": "GET /songs/{id}",
-    "success": true,
-    "message": "Retrieved song: Tum Hi Ho",
-    "timestamp": "2025-08-15T22:37:43.215801"
+    "test": "Songs CRUD",
+    "success": false,
+    "message": "No artists available for song creation",
+    "timestamp": "2025-08-16T12:45:25.654396"
   },
   {
     "test": "GET /playlists",
     "success": true,
-    "message": "Retrieved 4 playlists",
-    "timestamp": "2025-08-15T22:37:44.640775"
+    "message": "Retrieved 5 playlists",
+    "timestamp": "2025-08-16T12:45:29.156300"
   },
   {
     "test": "POST /playlists",
-    "success": true,
-    "message": "Created playlist: Bollywood Hits",
-    "timestamp": "2025-08-15T22:37:45.764946"
+    "success": false,
+    "message": "Error: list indices must be integers or slices, not str",
+    "timestamp": "2025-08-16T12:45:32.601343"
   },
   {
-    "test": "GET /playlists/{id}",
-    "success": true,
-    "message": "Retrieved playlist: Bollywood Hits",
-    "timestamp": "2025-08-15T22:37:46.315121"
+    "test": "POST /uploads/audio",
+    "success": false,
+    "message": "Status: 500, Response: {\"detail\":\"Upload failed: 'Response' object has no attribute 'error'\"}",
+    "timestamp": "2025-08-16T12:45:33.841365"
+  },
+  {
+    "test": "Enhanced Song Creation",
+    "success": false,
+    "message": "No artists available for song creation",
+    "timestamp": "2025-08-16T12:45:33.841683"
+  },
+  {
+    "test": "User Preferences API",
+    "success": false,
+    "message": "Need artists and songs for testing",
+    "timestamp": "2025-08-16T12:45:33.841733"
   },
   {
     "test": "GET /songs/search",
     "success": true,
     "message": "Search returned results structure: ['songs', 'artists', 'albums', 'playlists']",
-    "timestamp": "2025-08-15T22:37:47.415114"
+    "timestamp": "2025-08-16T12:45:33.857421"
   },
   {
     "test": "GET /admin/stats",
     "success": true,
     "message": "Stats: {'total_songs': 7, 'total_artists': 5, 'total_albums': 3, 'total_playlists': 5}",
-    "timestamp": "2025-08-15T22:37:48.487023"
+    "timestamp": "2025-08-16T12:45:36.709143"
   },
   {
     "test": "GET /admin/logs",
     "success": true,
     "message": "Retrieved 7 admin logs",
-    "timestamp": "2025-08-15T22:37:48.758047"
+    "timestamp": "2025-08-16T12:45:37.473142"
   },
   {
     "test": "Songs with Query Parameters",
     "success": true,
     "message": "Retrieved 2 songs with genre filter",
-    "timestamp": "2025-08-15T22:37:49.073757"
+    "timestamp": "2025-08-16T12:45:37.779669"
   },
   {
     "test": "Featured Playlists",
     "success": true,
     "message": "Retrieved 3 featured playlists",
-    "timestamp": "2025-08-15T22:37:50.772902"
+    "timestamp": "2025-08-16T12:45:40.297396"
   },
   {
-    "test": "POST /playlists/{id}/songs",
-    "success": true,
-    "message": "Successfully added song to playlist",
-    "timestamp": "2025-08-15T22:37:52.228780"
-  },
-  {
-    "test": "DELETE /playlists/{id}/songs/{song_id}",
-    "success": true,
-    "message": "Successfully removed song from playlist",
-    "timestamp": "2025-08-15T22:37:52.506570"
+    "test": "Playlist Song Operations",
+    "success": false,
+    "message": "Need playlist and song for testing",
+    "timestamp": "2025-08-16T12:45:40.297637"
   },
   {
     "test": "404 Error Handling",
     "success": true,
     "message": "Properly returns 404 for non-existent song",
-    "timestamp": "2025-08-15T22:37:52.840078"
+    "timestamp": "2025-08-16T12:45:40.589776"
   },
   {
     "test": "Invalid Endpoint",
     "success": true,
     "message": "Properly returns 404 for invalid endpoint",
-    "timestamp": "2025-08-15T22:37:52.842688"
+    "timestamp": "2025-08-16T12:45:40.605229"
   }
 ]
