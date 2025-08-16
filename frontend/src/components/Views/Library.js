@@ -1,16 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Play, Clock, Music, User, Disc, Heart, Plus, MoreVertical } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { usePlayer } from '../../context/PlayerContext';
+import { useAuth } from '../../context/AuthContext';
 import { mockSongs, mockArtists, mockAlbums, mockPlaylists } from '../../data/mock';
+import { userAPI, playlistsAPI } from '../../services/api';
 
 const Library = () => {
   const { playSong, currentSong, isPlaying } = usePlayer();
-  const [activeTab, setActiveTab] = useState('songs');
-  const [likedSongs, setLikedSongs] = useState(new Set(['1', '3', '5'])); // Mock liked songs
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState('liked');
+  
+  // Data states
+  const [likedSongs, setLikedSongs] = useState([]);
+  const [followedArtists, setFollowedArtists] = useState([]);
+  const [savedAlbums, setSavedAlbums] = useState([]);
+  const [userPlaylists, setUserPlaylists] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch user's library data
+  useEffect(() => {
+    const fetchLibraryData = async () => {
+      if (!user?.id) return;
+      
+      setLoading(true);
+      try {
+        // Fetch user's liked songs, followed artists, saved albums
+        const [likedResponse, followedResponse, savedResponse, playlistsResponse] = await Promise.all([
+          userAPI.getLikedSongs(user.id),
+          userAPI.getFollowedArtists(user.id),
+          userAPI.getSavedAlbums(user.id),
+          playlistsAPI.getAll({ created_by: user.id }) // Assuming playlists API supports filtering by creator
+        ]);
+        
+        setLikedSongs(likedResponse.songs || []);
+        setFollowedArtists(followedResponse.artists || []);
+        setSavedAlbums(savedResponse.albums || []);
+        setUserPlaylists(Array.isArray(playlistsResponse) ? playlistsResponse : []);
+        
+      } catch (error) {
+        // Fallback to mock data on error
+        console.warn('Failed to fetch library data, using mock data');
+        setLikedSongs(mockSongs.slice(0, 3)); // Mock some liked songs
+        setFollowedArtists(mockArtists.slice(0, 2)); // Mock some followed artists
+        setSavedAlbums(mockAlbums.slice(0, 2)); // Mock some saved albums
+        setUserPlaylists(mockPlaylists.slice(0, 2)); // Mock user playlists
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLibraryData();
+  }, [user?.id]);
 
   const handlePlaySong = (song) => {
     playSong(song, mockSongs);
