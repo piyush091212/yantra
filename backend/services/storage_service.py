@@ -28,7 +28,7 @@ class StorageService:
             file_contents = await file.read()
             
             # Upload to Supabase storage
-            result = self.supabase.storage.from_("music-file").upload(
+            result = self.supabase.storage.from_("music-files").upload(
                 unique_filename, 
                 file_contents,
                 {
