@@ -25,6 +25,7 @@ const Admin = () => {
   const [isSaving, setIsSaving] = useState(false);
   
   const [editingItem, setEditingItem] = useState(null);
+  const [editItemType, setEditItemType] = useState(null);
   
   // Form states
   const [songForm, setSongForm] = useState({
@@ -39,6 +40,56 @@ const Admin = () => {
   const [playlistForm, setPlaylistForm] = useState({
     name: '', description: '', coverImage: null
   });
+
+  // Reset form when modal opens
+  const resetSongForm = () => {
+    setSongForm({
+      title: '', artist_id: '', album_id: '', duration: '', genre: '', audioFile: null, coverImage: null
+    });
+  };
+
+  const resetArtistForm = () => {
+    setArtistForm({
+      name: '', bio: '', avatarImage: null
+    });
+  };
+
+  const resetAlbumForm = () => {
+    setAlbumForm({
+      title: '', artist_id: '', coverImage: null, releaseDate: ''
+    });
+  };
+
+  const resetPlaylistForm = () => {
+    setPlaylistForm({
+      name: '', description: '', coverImage: null
+    });
+  };
+
+  // Handle modal opening with form reset
+  const handleOpenSongDialog = () => {
+    resetSongForm();
+    setEditingItem(null);
+    setIsSongDialogOpen(true);
+  };
+
+  const handleOpenArtistDialog = () => {
+    resetArtistForm();
+    setEditingItem(null);
+    setIsArtistDialogOpen(true);
+  };
+
+  const handleOpenAlbumDialog = () => {
+    resetAlbumForm();
+    setEditingItem(null);
+    setIsAlbumDialogOpen(true);
+  };
+
+  const handleOpenPlaylistDialog = () => {
+    resetPlaylistForm();
+    setEditingItem(null);
+    setIsPlaylistDialogOpen(true);
+  };
 
   const handleSaveSong = async () => {
     setIsSaving(true);
