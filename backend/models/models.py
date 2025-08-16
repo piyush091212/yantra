@@ -136,3 +136,32 @@ class UploadResponse(BaseModel):
     filename: str
     url: str
     message: str
+
+# User preference models
+class UserBase(BaseModel):
+    email: str
+    name: str
+    is_admin: Optional[bool] = False
+
+class UserCreate(UserBase):
+    pass
+
+class User(UserBase):
+    id: str
+    joined_at: datetime
+    liked_songs: Optional[List[str]] = []
+    followed_artists: Optional[List[str]] = []
+    saved_albums: Optional[List[str]] = []
+    created_playlists: Optional[List[str]] = []
+
+class UserPreferences(BaseModel):
+    user_id: str
+    liked_songs: Optional[List[str]] = []
+    followed_artists: Optional[List[str]] = []
+    saved_albums: Optional[List[str]] = []
+
+class UserAction(BaseModel):
+    user_id: str
+    action_type: str  # like_song, follow_artist, save_album, create_playlist
+    entity_type: str  # song, artist, album, playlist
+    entity_id: str
