@@ -41,43 +41,192 @@ const Admin = () => {
   });
 
   const handleSaveSong = async () => {
-    // TODO: Implement actual API call
-    toast({
-      title: "Song saved successfully",
-      description: `"${songForm.title}" has been added to your library.`
-    });
-    setSongForm({ title: '', artist: '', album: '', duration: '', genre: '', audioFile: null, coverImage: null });
-    setIsSongDialogOpen(false);
+    setIsSaving(true);
+    try {
+      // Validate required fields
+      if (!songForm.title || !songForm.artist_id || !songForm.audioFile) {
+        toast({
+          title: "Validation Error",
+          description: "Title, Artist, and Audio file are required.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Use the new createWithFiles API
+      const result = await songsAPI.createWithFiles({
+        title: songForm.title,
+        artist_id: songForm.artist_id,
+        album_id: songForm.album_id || null,
+        duration: songForm.duration,
+        genre: songForm.genre,
+        audioFile: songForm.audioFile,
+        coverImage: songForm.coverImage
+      });
+
+      toast({
+        title: "Song saved successfully",
+        description: `"${songForm.title}" has been added to your library.`
+      });
+      
+      // Reset form and close modal
+      setSongForm({ title: '', artist_id: '', album_id: '', duration: '', genre: '', audioFile: null, coverImage: null });
+      setIsSongDialogOpen(false);
+      
+    } catch (error) {
+      toast({
+        title: "Error saving song",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleSaveArtist = async () => {
-    // TODO: Implement actual API call
-    toast({
-      title: "Artist saved successfully",
-      description: `"${artistForm.name}" has been added to your library.`
-    });
-    setArtistForm({ name: '', bio: '', avatarImage: null });
-    setIsArtistDialogOpen(false);
+    setIsSaving(true);
+    try {
+      // Validate required fields
+      if (!artistForm.name) {
+        toast({
+          title: "Validation Error",
+          description: "Artist name is required.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      let avatarUrl = null;
+      
+      // Upload avatar image if provided
+      if (artistForm.avatarImage) {
+        const uploadResult = await uploadAPI.uploadImage(artistForm.avatarImage);
+        avatarUrl = uploadResult.url;
+      }
+
+      // Create artist
+      const result = await artistsAPI.create({
+        name: artistForm.name,
+        bio: artistForm.bio,
+        avatar_url: avatarUrl
+      });
+
+      toast({
+        title: "Artist saved successfully",
+        description: `"${artistForm.name}" has been added to your library.`
+      });
+      
+      // Reset form and close modal
+      setArtistForm({ name: '', bio: '', avatarImage: null });
+      setIsArtistDialogOpen(false);
+      
+    } catch (error) {
+      toast({
+        title: "Error saving artist",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleSaveAlbum = async () => {
-    // TODO: Implement actual API call
-    toast({
-      title: "Album saved successfully",
-      description: `"${albumForm.title}" has been added to your library.`
-    });
-    setAlbumForm({ title: '', artist: '', coverImage: null, releaseDate: '' });
-    setIsAlbumDialogOpen(false);
+    setIsSaving(true);
+    try {
+      // Validate required fields
+      if (!albumForm.title || !albumForm.artist_id) {
+        toast({
+          title: "Validation Error",
+          description: "Album title and Artist are required.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      let coverUrl = null;
+      
+      // Upload cover image if provided
+      if (albumForm.coverImage) {
+        const uploadResult = await uploadAPI.uploadImage(albumForm.coverImage);
+        coverUrl = uploadResult.url;
+      }
+
+      // Create album
+      const result = await albumsAPI.create({
+        title: albumForm.title,
+        artist_id: albumForm.artist_id,
+        cover_url: coverUrl,
+        release_date: albumForm.releaseDate
+      });
+
+      toast({
+        title: "Album saved successfully",
+        description: `"${albumForm.title}" has been added to your library.`
+      });
+      
+      // Reset form and close modal
+      setAlbumForm({ title: '', artist_id: '', coverImage: null, releaseDate: '' });
+      setIsAlbumDialogOpen(false);
+      
+    } catch (error) {
+      toast({
+        title: "Error saving album",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleSavePlaylist = async () => {
-    // TODO: Implement actual API call
-    toast({
-      title: "Playlist saved successfully",
-      description: `"${playlistForm.name}" has been created.`
-    });
-    setPlaylistForm({ name: '', description: '', coverImage: null });
-    setIsPlaylistDialogOpen(false);
+    setIsSaving(true);
+    try {
+      // Validate required fields
+      if (!playlistForm.name) {
+        toast({
+          title: "Validation Error",
+          description: "Playlist name is required.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      let coverUrl = null;
+      
+      // Upload cover image if provided
+      if (playlistForm.coverImage) {
+        const uploadResult = await uploadAPI.uploadImage(playlistForm.coverImage);
+        coverUrl = uploadResult.url;
+      }
+
+      // Create playlist
+      const result = await playlistsAPI.create({
+        name: playlistForm.name,
+        description: playlistForm.description,
+        cover_url: coverUrl
+      });
+
+      toast({
+        title: "Playlist saved successfully",
+        description: `"${playlistForm.name}" has been created.`
+      });
+      
+      // Reset form and close modal
+      setPlaylistForm({ name: '', description: '', coverImage: null });
+      setIsPlaylistDialogOpen(false);
+      
+    } catch (error) {
+      toast({
+        title: "Error saving playlist",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleDelete = (type, item) => {
