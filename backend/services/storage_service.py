@@ -41,7 +41,7 @@ class StorageService:
                 raise HTTPException(status_code=500, detail=f"Upload failed: {result.error}")
             
             # Get public URL
-            public_url = self.supabase.storage.from_("music-file").get_public_url(unique_filename)
+            public_url = self.supabase.storage.from_("music-files").get_public_url(unique_filename)
             
             return public_url
             
