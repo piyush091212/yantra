@@ -232,18 +232,191 @@ const Admin = () => {
     </Dialog>
   );
 
+  const AddArtistDialog = () => (
+    <Dialog open={isArtistDialogOpen} onOpenChange={setIsArtistDialogOpen}>
+      <DialogContent className="bg-zinc-900 border-zinc-700 text-white max-w-xl">
+        <DialogHeader>
+          <DialogTitle>Add New Artist</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="artistName">Artist Name</Label>
+            <Input
+              id="artistName"
+              value={artistForm.name}
+              onChange={(e) => setArtistForm({...artistForm, name: e.target.value})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+              placeholder="Enter artist name"
+            />
+          </div>
+          <div>
+            <Label htmlFor="artistBio">Biography</Label>
+            <Textarea
+              id="artistBio"
+              value={artistForm.bio}
+              onChange={(e) => setArtistForm({...artistForm, bio: e.target.value})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+              placeholder="Enter artist biography"
+              rows={3}
+            />
+          </div>
+          <div>
+            <Label htmlFor="artistAvatar">Artist Photo</Label>
+            <Input
+              id="artistAvatar"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setArtistForm({...artistForm, avatarImage: e.target.files[0]})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end space-x-2 mt-4">
+          <Button
+            variant="outline"
+            onClick={() => setIsArtistDialogOpen(false)}
+            className="border-zinc-700 text-white hover:text-white"
+          >
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <Button onClick={handleSaveArtist} className="bg-green-600 hover:bg-green-700 text-white">
+            <Save className="w-4 h-4 mr-2" />
+            Save Artist
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+
+  const AddAlbumDialog = () => (
+    <Dialog open={isAlbumDialogOpen} onOpenChange={setIsAlbumDialogOpen}>
+      <DialogContent className="bg-zinc-900 border-zinc-700 text-white max-w-xl">
+        <DialogHeader>
+          <DialogTitle>Add New Album</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="albumTitle">Album Title</Label>
+            <Input
+              id="albumTitle"
+              value={albumForm.title}
+              onChange={(e) => setAlbumForm({...albumForm, title: e.target.value})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+              placeholder="Enter album title"
+            />
+          </div>
+          <div>
+            <Label htmlFor="albumArtist">Artist</Label>
+            <Input
+              id="albumArtist"
+              value={albumForm.artist}
+              onChange={(e) => setAlbumForm({...albumForm, artist: e.target.value})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+              placeholder="Enter artist name"
+            />
+          </div>
+          <div>
+            <Label htmlFor="releaseDate">Release Date</Label>
+            <Input
+              id="releaseDate"
+              type="date"
+              value={albumForm.releaseDate}
+              onChange={(e) => setAlbumForm({...albumForm, releaseDate: e.target.value})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+            />
+          </div>
+          <div>
+            <Label htmlFor="albumCover">Album Cover</Label>
+            <Input
+              id="albumCover"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAlbumForm({...albumForm, coverImage: e.target.files[0]})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end space-x-2 mt-4">
+          <Button
+            variant="outline"
+            onClick={() => setIsAlbumDialogOpen(false)}
+            className="border-zinc-700 text-white hover:text-white"
+          >
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <Button onClick={handleSaveAlbum} className="bg-green-600 hover:bg-green-700 text-white">
+            <Save className="w-4 h-4 mr-2" />
+            Save Album
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+
+  const AddPlaylistDialog = () => (
+    <Dialog open={isPlaylistDialogOpen} onOpenChange={setIsPlaylistDialogOpen}>
+      <DialogContent className="bg-zinc-900 border-zinc-700 text-white max-w-xl">
+        <DialogHeader>
+          <DialogTitle>Add New Playlist</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="playlistName">Playlist Name</Label>
+            <Input
+              id="playlistName"
+              value={playlistForm.name}
+              onChange={(e) => setPlaylistForm({...playlistForm, name: e.target.value})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+              placeholder="Enter playlist name"
+            />
+          </div>
+          <div>
+            <Label htmlFor="playlistDescription">Description</Label>
+            <Textarea
+              id="playlistDescription"
+              value={playlistForm.description}
+              onChange={(e) => setPlaylistForm({...playlistForm, description: e.target.value})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+              placeholder="Enter playlist description"
+              rows={3}
+            />
+          </div>
+          <div>
+            <Label htmlFor="playlistCover">Playlist Cover</Label>
+            <Input
+              id="playlistCover"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setPlaylistForm({...playlistForm, coverImage: e.target.files[0]})}
+              className="bg-zinc-800 border-zinc-700 text-white"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end space-x-2 mt-4">
+          <Button
+            variant="outline"
+            onClick={() => setIsPlaylistDialogOpen(false)}
+            className="border-zinc-700 text-white hover:text-white"
+          >
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <Button onClick={handleSavePlaylist} className="bg-green-600 hover:bg-green-700 text-white">
+            <Save className="w-4 h-4 mr-2" />
+            Save Playlist
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+
   return (
     <div className="flex-1 bg-gradient-to-b from-zinc-900 to-black text-white overflow-auto pb-32 md:pb-24">
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <Button 
-            onClick={() => setIsAddDialogOpen(true)}
-            className="bg-green-600 hover:bg-green-700 text-white"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add New
-          </Button>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -317,7 +490,7 @@ const Admin = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <Button
                       variant="outline"
-                      onClick={() => { setActiveTab('songs'); setIsAddDialogOpen(true); }}
+                      onClick={() => setIsSongDialogOpen(true)}
                       className="h-20 flex-col border-zinc-700 text-white hover:text-white"
                     >
                       <Music className="w-6 h-6 mb-2" />
@@ -325,7 +498,7 @@ const Admin = () => {
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => { setActiveTab('artists'); setIsAddDialogOpen(true); }}
+                      onClick={() => setIsArtistDialogOpen(true)}
                       className="h-20 flex-col border-zinc-700 text-white hover:text-white"
                     >
                       <User className="w-6 h-6 mb-2" />
@@ -333,7 +506,7 @@ const Admin = () => {
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => { setActiveTab('albums'); setIsAddDialogOpen(true); }}
+                      onClick={() => setIsAlbumDialogOpen(true)}
                       className="h-20 flex-col border-zinc-700 text-white hover:text-white"
                     >
                       <Disc className="w-6 h-6 mb-2" />
@@ -341,7 +514,7 @@ const Admin = () => {
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => { setActiveTab('playlists'); setIsAddDialogOpen(true); }}
+                      onClick={() => setIsPlaylistDialogOpen(true)}
                       className="h-20 flex-col border-zinc-700 text-white hover:text-white"
                     >
                       <ListMusic className="w-6 h-6 mb-2" />
@@ -357,7 +530,7 @@ const Admin = () => {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">Manage Songs ({mockSongs.length})</h2>
               <Button 
-                onClick={() => setIsAddDialogOpen(true)}
+                onClick={() => setIsSongDialogOpen(true)}
                 className="bg-green-600 hover:bg-green-700 text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -374,7 +547,10 @@ const Admin = () => {
           <TabsContent value="artists">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">Manage Artists ({mockArtists.length})</h2>
-              <Button className="bg-green-600 hover:bg-green-700 text-white">
+              <Button 
+                onClick={() => setIsArtistDialogOpen(true)}
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Artist
               </Button>
@@ -416,7 +592,10 @@ const Admin = () => {
           <TabsContent value="albums">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">Manage Albums ({mockAlbums.length})</h2>
-              <Button className="bg-green-600 hover:bg-green-700 text-white">
+              <Button 
+                onClick={() => setIsAlbumDialogOpen(true)}
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Album
               </Button>
@@ -461,7 +640,10 @@ const Admin = () => {
           <TabsContent value="playlists">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">Manage Playlists ({mockPlaylists.length})</h2>
-              <Button className="bg-green-600 hover:bg-green-700 text-white">
+              <Button 
+                onClick={() => setIsPlaylistDialogOpen(true)}
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Playlist
               </Button>
@@ -503,6 +685,9 @@ const Admin = () => {
         </Tabs>
 
         <AddSongDialog />
+        <AddArtistDialog />
+        <AddAlbumDialog />
+        <AddPlaylistDialog />
       </div>
     </div>
   );
