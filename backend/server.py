@@ -34,6 +34,8 @@ api_router.include_router(artists.router)
 api_router.include_router(albums.router)
 api_router.include_router(playlists.router)
 api_router.include_router(admin.router)
+api_router.include_router(uploads.router)
+api_router.include_router(users.router)
 
 # Include the router in the main app
 app.include_router(api_router)
