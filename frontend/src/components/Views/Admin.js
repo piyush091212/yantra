@@ -1027,46 +1027,16 @@ const Admin = () => {
     </Dialog>
   ), [isAlbumDialogOpen, albumForm, artists, isSaving, handleAlbumFormChange]);
 
-  const AddPlaylistDialog = () => (
+  const AddPlaylistDialog = useMemo(() => (
     <Dialog open={isPlaylistDialogOpen} onOpenChange={setIsPlaylistDialogOpen}>
       <DialogContent className="bg-zinc-900 border-zinc-700 text-white max-w-xl">
         <DialogHeader>
           <DialogTitle>Add New Playlist</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="playlistName">Playlist Name *</Label>
-            <Input
-              id="playlistName"
-              value={playlistForm.name}
-              onChange={(e) => handlePlaylistFormChange('name', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter playlist name"
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="playlistDescription">Description</Label>
-            <Textarea
-              id="playlistDescription"
-              value={playlistForm.description}
-              onChange={(e) => handlePlaylistFormChange('description', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter playlist description"
-              rows={3}
-            />
-          </div>
-          <div>
-            <Label htmlFor="playlistCover">Playlist Cover</Label>
-            <Input
-              id="playlistCover"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handlePlaylistFormChange('coverImage', e.target.files[0])}
-              className="bg-zinc-800 border-zinc-700 text-white"
-            />
-          </div>
-        </div>
+        <PlaylistFormFields 
+          form={playlistForm} 
+          onChange={handlePlaylistFormChange} 
+        />
         <div className="flex justify-end space-x-2 mt-4">
           <Button
             variant="outline"
@@ -1097,7 +1067,7 @@ const Admin = () => {
         </div>
       </DialogContent>
     </Dialog>
-  );
+  ), [isPlaylistDialogOpen, playlistForm, isSaving, handlePlaylistFormChange]);
 
   // Edit Dialog - Universal edit modal
   const EditDialog = () => {
