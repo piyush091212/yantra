@@ -1067,7 +1067,7 @@ const Admin = () => {
         </div>
       </DialogContent>
     </Dialog>
-  ), [isPlaylistDialogOpen, playlistForm, isSaving, handlePlaylistFormChange]);
+  ), [isPlaylistDialogOpen, isSaving]);
 
   // Edit Dialog - Universal edit modal
   const EditDialog = () => {
