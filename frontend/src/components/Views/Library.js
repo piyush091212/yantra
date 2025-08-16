@@ -238,8 +238,6 @@ const Library = () => {
     </Card>
   );
 
-  const likedSongsData = mockSongs.filter(song => likedSongs.has(song.id));
-
   return (
     <div className="flex-1 bg-gradient-to-b from-zinc-900 to-black text-white overflow-auto pb-32 md:pb-24">
       <div className="p-6">
@@ -251,88 +249,121 @@ const Library = () => {
           </Button>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 bg-zinc-800 mb-6">
-            <TabsTrigger value="songs" className="text-white data-[state=active]:text-black">
-              <Music className="w-4 h-4 mr-2" />
-              Songs
-            </TabsTrigger>
-            <TabsTrigger value="playlists" className="text-white data-[state=active]:text-black">Playlists</TabsTrigger>
-            <TabsTrigger value="artists" className="text-white data-[state=active]:text-black">Artists</TabsTrigger>
-            <TabsTrigger value="albums" className="text-white data-[state=active]:text-black">Albums</TabsTrigger>
-            <TabsTrigger value="liked" className="text-white data-[state=active]:text-black">
-              <Heart className="w-4 h-4 mr-2" />
-              Liked
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="songs" className="space-y-2">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">All Songs ({mockSongs.length})</h2>
-              <Button variant="outline" size="sm" className="border-zinc-700 text-white hover:text-white">
-                <Play className="w-4 h-4 mr-2" />
-                Play All
-              </Button>
-            </div>
-            {mockSongs.map((song) => (
-              <SongRow key={song.id} song={song} showLikeButton={true} />
-            ))}
-          </TabsContent>
-
-          <TabsContent value="playlists">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold">Your Playlists ({mockPlaylists.length})</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {mockPlaylists.map((playlist) => (
-                <PlaylistCard key={playlist.id} playlist={playlist} />
+        {loading ? (
+          <div className="animate-pulse space-y-8">
+            <div className="h-8 bg-zinc-800 rounded w-1/2"></div>
+            <div className="space-y-4">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="h-16 bg-zinc-800 rounded"></div>
               ))}
             </div>
-          </TabsContent>
+          </div>
+        ) : (
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-4 bg-zinc-800 mb-6">
+              <TabsTrigger value="liked" className="text-white data-[state=active]:text-black">
+                <Heart className="w-4 h-4 mr-2" />
+                Liked Songs
+              </TabsTrigger>
+              <TabsTrigger value="artists" className="text-white data-[state=active]:text-black">
+                <User className="w-4 h-4 mr-2" />
+                Artists
+              </TabsTrigger>
+              <TabsTrigger value="albums" className="text-white data-[state=active]:text-black">
+                <Disc className="w-4 h-4 mr-2" />
+                Albums
+              </TabsTrigger>
+              <TabsTrigger value="playlists" className="text-white data-[state=active]:text-black">
+                <Music className="w-4 h-4 mr-2" />
+                Playlists
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="artists">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold">Followed Artists ({mockArtists.length})</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-              {mockArtists.map((artist) => (
-                <ArtistCard key={artist.id} artist={artist} />
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="albums">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold">Saved Albums ({mockAlbums.length})</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {mockAlbums.map((album) => (
-                <AlbumCard key={album.id} album={album} />
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="liked" className="space-y-2">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Liked Songs ({likedSongsData.length})</h2>
-              <Button variant="outline" size="sm" className="border-zinc-700 text-white hover:text-white">
-                <Play className="w-4 h-4 mr-2" />
-                Play All
-              </Button>
-            </div>
-            {likedSongsData.length > 0 ? (
-              likedSongsData.map((song) => (
-                <SongRow key={song.id} song={song} showLikeButton={true} />
-              ))
-            ) : (
-              <div className="text-center py-12">
-                <Heart className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">No liked songs yet</h3>
-                <p className="text-zinc-400">Start liking songs to see them here</p>
+            <TabsContent value="liked" className="space-y-2">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Liked Songs ({likedSongs.length})</h2>
+                {likedSongs.length > 0 && (
+                  <Button variant="outline" size="sm" className="border-zinc-700 text-white hover:text-white">
+                    <Play className="w-4 h-4 mr-2" />
+                    Play All
+                  </Button>
+                )}
               </div>
-            )}
-          </TabsContent>
-        </Tabs>
+              {likedSongs.length > 0 ? (
+                likedSongs.map((song) => (
+                  <SongRow key={song.id} song={song} showLikeButton={true} />
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <Heart className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">No liked songs yet</h3>
+                  <p className="text-zinc-400">Start liking songs to see them here</p>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="artists">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold">Followed Artists ({followedArtists.length})</h2>
+              </div>
+              {followedArtists.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                  {followedArtists.map((artist) => (
+                    <ArtistCard key={artist.id} artist={artist} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <User className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">No followed artists yet</h3>
+                  <p className="text-zinc-400">Start following artists to see them here</p>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="albums">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold">Saved Albums ({savedAlbums.length})</h2>
+              </div>
+              {savedAlbums.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {savedAlbums.map((album) => (
+                    <AlbumCard key={album.id} album={album} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <Disc className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">No saved albums yet</h3>
+                  <p className="text-zinc-400">Start saving albums to see them here</p>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="playlists">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold">Your Playlists ({userPlaylists.length})</h2>
+              </div>
+              {userPlaylists.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {userPlaylists.map((playlist) => (
+                    <PlaylistCard key={playlist.id} playlist={playlist} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <Music className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">No playlists yet</h3>
+                  <p className="text-zinc-400">Create your first playlist to get started</p>
+                  <Button variant="outline" className="mt-4 border-zinc-700 text-white hover:text-white">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Playlist
+                  </Button>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+        )}
       </div>
     </div>
   );
