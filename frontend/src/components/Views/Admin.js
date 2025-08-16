@@ -49,6 +49,23 @@ const Admin = () => {
     name: '', description: '', coverImage: null
   });
 
+  // Optimized form change handlers using functional updates to prevent re-renders
+  const handleSongFormChange = useCallback((field, value) => {
+    setSongForm(prev => ({...prev, [field]: value}));
+  }, []);
+
+  const handleArtistFormChange = useCallback((field, value) => {
+    setArtistForm(prev => ({...prev, [field]: value}));
+  }, []);
+
+  const handleAlbumFormChange = useCallback((field, value) => {
+    setAlbumForm(prev => ({...prev, [field]: value}));
+  }, []);
+
+  const handlePlaylistFormChange = useCallback((field, value) => {
+    setPlaylistForm(prev => ({...prev, [field]: value}));
+  }, []);
+
   // Memoized form components to prevent re-rendering during typing
   const ArtistFormFields = React.memo(({ form, onChange }) => (
     <div className="space-y-4">
