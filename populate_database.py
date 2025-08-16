@@ -10,7 +10,7 @@ import sys
 import time
 
 # Backend URL from environment
-BACKEND_URL = "https://flicker-fix.preview.emergentagent.com"
+BACKEND_URL = "http://localhost:8001"
 API = f"{BACKEND_URL}/api"
 
 def check_backend_health():
