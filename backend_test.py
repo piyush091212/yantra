@@ -176,15 +176,15 @@ class YantraTuneAPITester:
         
         # Test GET all songs
         try:
-            response = requests.get(f"{self.base_url}/songs")
+            response = requests.get(f"{self.base_url}/songs/")
             if response.status_code == 200:
                 songs = response.json()
-                self.log_test("GET /songs", True, f"Retrieved {len(songs)} songs")
+                self.log_test("GET /songs/", True, f"Retrieved {len(songs)} songs")
             else:
-                self.log_test("GET /songs", False, f"Status: {response.status_code}")
+                self.log_test("GET /songs/", False, f"Status: {response.status_code}")
                 return False
         except Exception as e:
-            self.log_test("GET /songs", False, f"Error: {str(e)}")
+            self.log_test("GET /songs/", False, f"Error: {str(e)}")
             return False
 
         # Test POST create song
@@ -199,11 +199,11 @@ class YantraTuneAPITester:
         }
         
         try:
-            response = requests.post(f"{self.base_url}/songs", json=song_data)
+            response = requests.post(f"{self.base_url}/songs/", json=song_data)
             if response.status_code == 200:
                 song = response.json()
                 self.created_entities['songs'].append(song['id'])
-                self.log_test("POST /songs", True, f"Created song: {song['title']}")
+                self.log_test("POST /songs/", True, f"Created song: {song['title']}")
                 
                 # Test GET specific song
                 response = requests.get(f"{self.base_url}/songs/{song['id']}")
@@ -214,10 +214,10 @@ class YantraTuneAPITester:
                     
                 return True
             else:
-                self.log_test("POST /songs", False, f"Status: {response.status_code}, Response: {response.text}")
+                self.log_test("POST /songs/", False, f"Status: {response.status_code}, Response: {response.text}")
                 return False
         except Exception as e:
-            self.log_test("POST /songs", False, f"Error: {str(e)}")
+            self.log_test("POST /songs/", False, f"Error: {str(e)}")
             return False
 
     def test_playlists_crud(self):
