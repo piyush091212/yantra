@@ -402,6 +402,291 @@ class YantraTuneAPITester:
             self.log_test("Featured Playlists", False, f"Error: {str(e)}")
             return False
 
+    def test_file_upload_endpoints(self):
+        """Test file upload endpoints"""
+        # Create mock audio file
+        audio_content = b"fake audio content for testing"
+        audio_files = {'file': ('test_song.mp3', audio_content, 'audio/mpeg')}
+        
+        # Test audio file upload
+        try:
+            response = requests.post(f"{self.base_url}/uploads/audio", files=audio_files)
+            if response.status_code == 200:
+                upload_result = response.json()
+                expected_keys = ['filename', 'url', 'message']
+                if all(key in upload_result for key in expected_keys):
+                    self.log_test("POST /uploads/audio", True, f"Audio upload successful: {upload_result['message']}")
+                else:
+                    self.log_test("POST /uploads/audio", False, f"Missing keys in response: {upload_result}")
+                    return False
+            else:
+                self.log_test("POST /uploads/audio", False, f"Status: {response.status_code}, Response: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("POST /uploads/audio", False, f"Error: {str(e)}")
+            return False
+
+        # Create mock image file
+        image_content = b"fake image content for testing"
+        image_files = {'file': ('test_cover.jpg', image_content, 'image/jpeg')}
+        
+        # Test image file upload
+        try:
+            response = requests.post(f"{self.base_url}/uploads/image", files=image_files)
+            if response.status_code == 200:
+                upload_result = response.json()
+                expected_keys = ['filename', 'url', 'message']
+                if all(key in upload_result for key in expected_keys):
+                    self.log_test("POST /uploads/image", True, f"Image upload successful: {upload_result['message']}")
+                else:
+                    self.log_test("POST /uploads/image", False, f"Missing keys in response: {upload_result}")
+                    return False
+            else:
+                self.log_test("POST /uploads/image", False, f"Status: {response.status_code}, Response: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("POST /uploads/image", False, f"Error: {str(e)}")
+            return False
+
+        # Test invalid file type for audio upload
+        try:
+            invalid_files = {'file': ('test.txt', b"text content", 'text/plain')}
+            response = requests.post(f"{self.base_url}/uploads/audio", files=invalid_files)
+            if response.status_code == 400:
+                self.log_test("Audio Upload Validation", True, "Properly rejects non-audio files")
+            else:
+                self.log_test("Audio Upload Validation", False, f"Expected 400, got {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Audio Upload Validation", False, f"Error: {str(e)}")
+            return False
+
+        return True
+
+    def test_enhanced_song_creation(self):
+        """Test enhanced song creation with file uploads"""
+        # Need an artist first
+        if not self.created_entities['artists']:
+            self.log_test("Enhanced Song Creation", False, "No artists available for song creation")
+            return False
+            
+        artist_id = self.created_entities['artists'][0]
+        album_id = self.created_entities['albums'][0] if self.created_entities['albums'] else None
+        
+        # Create mock files
+        audio_content = b"fake audio content for testing"
+        image_content = b"fake image content for testing"
+        
+        # Test song creation with files
+        try:
+            files = {
+                'audio_file': ('bollywood_hit.mp3', audio_content, 'audio/mpeg'),
+                'cover_image': ('bollywood_cover.jpg', image_content, 'image/jpeg')
+            }
+            
+            data = {
+                'title': 'Kal Ho Naa Ho',
+                'artist_id': artist_id,
+                'album_id': album_id,
+                'duration': '5:12',
+                'genre': 'Bollywood'
+            }
+            
+            response = requests.post(f"{self.base_url}/songs/upload", files=files, data=data)
+            if response.status_code == 200:
+                song = response.json()
+                self.created_entities['songs'].append(song['id'])
+                self.log_test("POST /songs/upload (with files)", True, f"Created song with files: {song['title']}")
+                
+                # Verify the song has file URLs
+                if song.get('audio_url') and song.get('cover_url'):
+                    self.log_test("Song File URLs", True, "Song created with proper file URLs")
+                else:
+                    self.log_test("Song File URLs", False, f"Missing file URLs: audio_url={song.get('audio_url')}, cover_url={song.get('cover_url')}")
+                    return False
+                    
+            else:
+                self.log_test("POST /songs/upload (with files)", False, f"Status: {response.status_code}, Response: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("POST /songs/upload (with files)", False, f"Error: {str(e)}")
+            return False
+
+        # Test song creation without cover image
+        try:
+            files = {
+                'audio_file': ('another_song.mp3', audio_content, 'audio/mpeg')
+            }
+            
+            data = {
+                'title': 'Tere Naam',
+                'artist_id': artist_id,
+                'duration': '4:30',
+                'genre': 'Bollywood'
+            }
+            
+            response = requests.post(f"{self.base_url}/songs/upload", files=files, data=data)
+            if response.status_code == 200:
+                song = response.json()
+                self.created_entities['songs'].append(song['id'])
+                self.log_test("POST /songs/upload (audio only)", True, f"Created song without cover: {song['title']}")
+                return True
+            else:
+                self.log_test("POST /songs/upload (audio only)", False, f"Status: {response.status_code}, Response: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("POST /songs/upload (audio only)", False, f"Error: {str(e)}")
+            return False
+
+    def test_user_preferences_api(self):
+        """Test user preferences API endpoints"""
+        # Use a test user ID
+        test_user_id = "test_user_123"
+        
+        # Need entities to test with
+        if not self.created_entities['artists'] or not self.created_entities['songs']:
+            self.log_test("User Preferences API", False, "Need artists and songs for testing")
+            return False
+            
+        artist_id = self.created_entities['artists'][0]
+        song_id = self.created_entities['songs'][0]
+        album_id = self.created_entities['albums'][0] if self.created_entities['albums'] else None
+        
+        # Test get user preferences (should create if not exists)
+        try:
+            response = requests.get(f"{self.base_url}/users/{test_user_id}/preferences")
+            if response.status_code == 200:
+                preferences = response.json()
+                expected_keys = ['user_id', 'liked_songs', 'followed_artists', 'saved_albums']
+                if all(key in preferences for key in expected_keys):
+                    self.log_test("GET /users/{id}/preferences", True, f"Retrieved user preferences: {preferences['user_id']}")
+                else:
+                    self.log_test("GET /users/{id}/preferences", False, f"Missing keys in response: {preferences}")
+                    return False
+            else:
+                self.log_test("GET /users/{id}/preferences", False, f"Status: {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("GET /users/{id}/preferences", False, f"Error: {str(e)}")
+            return False
+
+        # Test like song (toggle)
+        try:
+            response = requests.post(f"{self.base_url}/users/{test_user_id}/like-song/{song_id}")
+            if response.status_code == 200:
+                result = response.json()
+                if 'message' in result and 'is_liked' in result:
+                    self.log_test("POST /users/{id}/like-song/{song_id}", True, f"Song like toggled: {result['message']}")
+                    
+                    # Test toggle again (unlike)
+                    response = requests.post(f"{self.base_url}/users/{test_user_id}/like-song/{song_id}")
+                    if response.status_code == 200:
+                        result2 = response.json()
+                        if result['is_liked'] != result2['is_liked']:
+                            self.log_test("Song Like Toggle", True, "Song like/unlike toggle working correctly")
+                        else:
+                            self.log_test("Song Like Toggle", False, "Toggle not working properly")
+                            return False
+                    else:
+                        self.log_test("Song Like Toggle", False, f"Second toggle failed: {response.status_code}")
+                        return False
+                else:
+                    self.log_test("POST /users/{id}/like-song/{song_id}", False, f"Missing keys in response: {result}")
+                    return False
+            else:
+                self.log_test("POST /users/{id}/like-song/{song_id}", False, f"Status: {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("POST /users/{id}/like-song/{song_id}", False, f"Error: {str(e)}")
+            return False
+
+        # Test follow artist
+        try:
+            response = requests.post(f"{self.base_url}/users/{test_user_id}/follow-artist/{artist_id}")
+            if response.status_code == 200:
+                result = response.json()
+                if 'message' in result and 'is_following' in result:
+                    self.log_test("POST /users/{id}/follow-artist/{artist_id}", True, f"Artist follow toggled: {result['message']}")
+                else:
+                    self.log_test("POST /users/{id}/follow-artist/{artist_id}", False, f"Missing keys in response: {result}")
+                    return False
+            else:
+                self.log_test("POST /users/{id}/follow-artist/{artist_id}", False, f"Status: {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("POST /users/{id}/follow-artist/{artist_id}", False, f"Error: {str(e)}")
+            return False
+
+        # Test save album (if album exists)
+        if album_id:
+            try:
+                response = requests.post(f"{self.base_url}/users/{test_user_id}/save-album/{album_id}")
+                if response.status_code == 200:
+                    result = response.json()
+                    if 'message' in result and 'is_saved' in result:
+                        self.log_test("POST /users/{id}/save-album/{album_id}", True, f"Album save toggled: {result['message']}")
+                    else:
+                        self.log_test("POST /users/{id}/save-album/{album_id}", False, f"Missing keys in response: {result}")
+                        return False
+                else:
+                    self.log_test("POST /users/{id}/save-album/{album_id}", False, f"Status: {response.status_code}")
+                    return False
+            except Exception as e:
+                self.log_test("POST /users/{id}/save-album/{album_id}", False, f"Error: {str(e)}")
+                return False
+
+        # Test get liked songs
+        try:
+            response = requests.get(f"{self.base_url}/users/{test_user_id}/liked-songs")
+            if response.status_code == 200:
+                result = response.json()
+                if 'songs' in result and 'total' in result:
+                    self.log_test("GET /users/{id}/liked-songs", True, f"Retrieved {result['total']} liked songs")
+                else:
+                    self.log_test("GET /users/{id}/liked-songs", False, f"Missing keys in response: {result}")
+                    return False
+            else:
+                self.log_test("GET /users/{id}/liked-songs", False, f"Status: {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("GET /users/{id}/liked-songs", False, f"Error: {str(e)}")
+            return False
+
+        # Test get followed artists
+        try:
+            response = requests.get(f"{self.base_url}/users/{test_user_id}/followed-artists")
+            if response.status_code == 200:
+                result = response.json()
+                if 'artists' in result and 'total' in result:
+                    self.log_test("GET /users/{id}/followed-artists", True, f"Retrieved {result['total']} followed artists")
+                else:
+                    self.log_test("GET /users/{id}/followed-artists", False, f"Missing keys in response: {result}")
+                    return False
+            else:
+                self.log_test("GET /users/{id}/followed-artists", False, f"Status: {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("GET /users/{id}/followed-artists", False, f"Error: {str(e)}")
+            return False
+
+        # Test get saved albums
+        try:
+            response = requests.get(f"{self.base_url}/users/{test_user_id}/saved-albums")
+            if response.status_code == 200:
+                result = response.json()
+                if 'albums' in result and 'total' in result:
+                    self.log_test("GET /users/{id}/saved-albums", True, f"Retrieved {result['total']} saved albums")
+                    return True
+                else:
+                    self.log_test("GET /users/{id}/saved-albums", False, f"Missing keys in response: {result}")
+                    return False
+            else:
+                self.log_test("GET /users/{id}/saved-albums", False, f"Status: {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("GET /users/{id}/saved-albums", False, f"Error: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all tests in sequence"""
         print(f"🚀 Starting YantraTune Backend API Tests")
