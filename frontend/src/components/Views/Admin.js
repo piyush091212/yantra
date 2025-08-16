@@ -297,33 +297,36 @@ const Admin = () => {
         </DialogHeader>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
           <div>
-            <Label htmlFor="title">Song Title</Label>
+            <Label htmlFor="title">Song Title *</Label>
             <Input
               id="title"
               value={songForm.title}
               onChange={(e) => setSongForm({...songForm, title: e.target.value})}
               className="bg-zinc-800 border-zinc-700 text-white"
               placeholder="Enter song title"
+              required
             />
           </div>
           <div>
-            <Label htmlFor="artist">Artist</Label>
+            <Label htmlFor="artist_id">Artist ID *</Label>
             <Input
-              id="artist"
-              value={songForm.artist}
-              onChange={(e) => setSongForm({...songForm, artist: e.target.value})}
+              id="artist_id"
+              value={songForm.artist_id}
+              onChange={(e) => setSongForm({...songForm, artist_id: e.target.value})}
               className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter artist name"
+              placeholder="Enter artist ID (e.g., artist_123)"
+              required
             />
+            <p className="text-xs text-zinc-500 mt-1">Tip: Create the artist first to get the artist ID</p>
           </div>
           <div>
-            <Label htmlFor="album">Album</Label>
+            <Label htmlFor="album_id">Album ID (Optional)</Label>
             <Input
-              id="album"
-              value={songForm.album}
-              onChange={(e) => setSongForm({...songForm, album: e.target.value})}
+              id="album_id"
+              value={songForm.album_id}
+              onChange={(e) => setSongForm({...songForm, album_id: e.target.value})}
               className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter album name"
+              placeholder="Enter album ID (optional)"
             />
           </div>
           <div>
@@ -357,13 +360,14 @@ const Admin = () => {
             />
           </div>
           <div className="md:col-span-2">
-            <Label htmlFor="audioFile">Audio File</Label>
+            <Label htmlFor="audioFile">Audio File *</Label>
             <Input
               id="audioFile"
               type="file"
               accept="audio/*"
               onChange={(e) => setSongForm({...songForm, audioFile: e.target.files[0]})}
               className="bg-zinc-800 border-zinc-700 text-white"
+              required
             />
           </div>
         </div>
@@ -372,13 +376,27 @@ const Admin = () => {
             variant="outline"
             onClick={() => setIsSongDialogOpen(false)}
             className="border-zinc-700 text-white hover:text-white"
+            disabled={isSaving}
           >
             <X className="w-4 h-4 mr-2" />
             Cancel
           </Button>
-          <Button onClick={handleSaveSong} className="bg-green-600 hover:bg-green-700 text-white">
-            <Save className="w-4 h-4 mr-2" />
-            Save Song
+          <Button 
+            onClick={handleSaveSong} 
+            className="bg-green-600 hover:bg-green-700 text-white"
+            disabled={isSaving}
+          >
+            {isSaving ? (
+              <>
+                <Upload className="w-4 h-4 mr-2 animate-spin" />
+                Uploading...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save Song
+              </>
+            )}
           </Button>
         </div>
       </DialogContent>
