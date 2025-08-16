@@ -9,6 +9,7 @@ import { Label } from '../ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { useToast } from '../../hooks/use-toast';
 import { mockSongs, mockArtists, mockAlbums, mockPlaylists } from '../../data/mock';
+import { songsAPI, artistsAPI, albumsAPI, playlistsAPI, uploadAPI } from '../../services/api';
 
 const Admin = () => {
   const { toast } = useToast();
@@ -20,17 +21,20 @@ const Admin = () => {
   const [isAlbumDialogOpen, setIsAlbumDialogOpen] = useState(false);
   const [isPlaylistDialogOpen, setIsPlaylistDialogOpen] = useState(false);
   
+  // Loading states
+  const [isSaving, setIsSaving] = useState(false);
+  
   const [editingItem, setEditingItem] = useState(null);
   
   // Form states
   const [songForm, setSongForm] = useState({
-    title: '', artist: '', album: '', duration: '', genre: '', audioFile: null, coverImage: null
+    title: '', artist_id: '', album_id: '', duration: '', genre: '', audioFile: null, coverImage: null
   });
   const [artistForm, setArtistForm] = useState({
     name: '', bio: '', avatarImage: null
   });
   const [albumForm, setAlbumForm] = useState({
-    title: '', artist: '', coverImage: null, releaseDate: ''
+    title: '', artist_id: '', coverImage: null, releaseDate: ''
   });
   const [playlistForm, setPlaylistForm] = useState({
     name: '', description: '', coverImage: null
