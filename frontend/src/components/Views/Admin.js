@@ -899,88 +899,17 @@ const Admin = () => {
     </div>
   );
 
-  const AddSongDialog = () => (
+  const AddSongDialog = useMemo(() => (
     <Dialog open={isSongDialogOpen} onOpenChange={setIsSongDialogOpen}>
       <DialogContent className="bg-zinc-900 border-zinc-700 text-white max-w-2xl">
         <DialogHeader>
           <DialogTitle>Add New Song</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
-          <div>
-            <Label htmlFor="title">Song Title *</Label>
-            <Input
-              id="title"
-              value={songForm.title}
-              onChange={(e) => handleSongFormChange('title', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter song title"
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="artist_id">Artist ID *</Label>
-            <Input
-              id="artist_id"
-              value={songForm.artist_id}
-              onChange={(e) => handleSongFormChange('artist_id', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter artist ID"
-              required
-            />
-            <p className="text-xs text-zinc-500 mt-1">Available artists: {artists.map(a => `${a.name} (${a.id.slice(0, 8)}...)`).join(', ')}</p>
-          </div>
-          <div>
-            <Label htmlFor="album_id">Album ID (Optional)</Label>
-            <Input
-              id="album_id"
-              value={songForm.album_id}
-              onChange={(e) => handleSongFormChange('album_id', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter album ID (optional)"
-            />
-          </div>
-          <div>
-            <Label htmlFor="duration">Duration</Label>
-            <Input
-              id="duration"
-              value={songForm.duration}
-              onChange={(e) => handleSongFormChange('duration', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="e.g. 3:25"
-            />
-          </div>
-          <div>
-            <Label htmlFor="genre">Genre</Label>
-            <Input
-              id="genre"
-              value={songForm.genre}
-              onChange={(e) => handleSongFormChange('genre', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter genre"
-            />
-          </div>
-          <div>
-            <Label htmlFor="coverImage">Cover Image</Label>
-            <Input
-              id="coverImage"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleSongFormChange('coverImage', e.target.files[0])}
-              className="bg-zinc-800 border-zinc-700 text-white"
-            />
-          </div>
-          <div className="md:col-span-2">
-            <Label htmlFor="audioFile">Audio File *</Label>
-            <Input
-              id="audioFile"
-              type="file"
-              accept="audio/*"
-              onChange={(e) => handleSongFormChange('audioFile', e.target.files[0])}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              required
-            />
-          </div>
-        </div>
+        <SongFormFields 
+          form={songForm} 
+          onChange={handleSongFormChange} 
+          artists={artists}
+        />
         <div className="flex justify-end space-x-2 mt-4">
           <Button
             variant="outline"
@@ -1011,7 +940,7 @@ const Admin = () => {
         </div>
       </DialogContent>
     </Dialog>
-  );
+  ), [isSongDialogOpen, songForm, artists, isSaving, handleSongFormChange]);
 
   const AddArtistDialog = useMemo(() => (
     <Dialog open={isArtistDialogOpen} onOpenChange={setIsArtistDialogOpen}>
