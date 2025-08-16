@@ -1182,7 +1182,7 @@ const Admin = () => {
                   id="editAlbumCover"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setAlbumForm({...albumForm, coverImage: e.target.files[0]})}
+                  onChange={(e) => handleAlbumFormChange('coverImage', e.target.files[0])}
                   className="bg-zinc-800 border-zinc-700 text-white"
                 />
               </div>
