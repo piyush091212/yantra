@@ -1013,46 +1013,16 @@ const Admin = () => {
     </Dialog>
   );
 
-  const AddArtistDialog = () => (
+  const AddArtistDialog = useMemo(() => (
     <Dialog open={isArtistDialogOpen} onOpenChange={setIsArtistDialogOpen}>
       <DialogContent className="bg-zinc-900 border-zinc-700 text-white max-w-xl">
         <DialogHeader>
           <DialogTitle>Add New Artist</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="artistName">Artist Name *</Label>
-            <Input
-              id="artistName"
-              value={artistForm.name}
-              onChange={(e) => handleArtistFormChange('name', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter artist name"
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="artistBio">Biography</Label>
-            <Textarea
-              id="artistBio"
-              value={artistForm.bio}
-              onChange={(e) => handleArtistFormChange('bio', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter artist biography"
-              rows={3}
-            />
-          </div>
-          <div>
-            <Label htmlFor="artistAvatar">Artist Photo</Label>
-            <Input
-              id="artistAvatar"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleArtistFormChange('avatarImage', e.target.files[0])}
-              className="bg-zinc-800 border-zinc-700 text-white"
-            />
-          </div>
-        </div>
+        <ArtistFormFields 
+          form={artistForm} 
+          onChange={handleArtistFormChange} 
+        />
         <div className="flex justify-end space-x-2 mt-4">
           <Button
             variant="outline"
@@ -1083,7 +1053,7 @@ const Admin = () => {
         </div>
       </DialogContent>
     </Dialog>
-  );
+  ), [isArtistDialogOpen, artistForm, isSaving, handleArtistFormChange]);
 
   const AddAlbumDialog = () => (
     <Dialog open={isAlbumDialogOpen} onOpenChange={setIsAlbumDialogOpen}>
