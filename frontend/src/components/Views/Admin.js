@@ -984,57 +984,17 @@ const Admin = () => {
     </Dialog>
   ), [isArtistDialogOpen, artistForm, isSaving, handleArtistFormChange]);
 
-  const AddAlbumDialog = () => (
+  const AddAlbumDialog = useMemo(() => (
     <Dialog open={isAlbumDialogOpen} onOpenChange={setIsAlbumDialogOpen}>
       <DialogContent className="bg-zinc-900 border-zinc-700 text-white max-w-xl">
         <DialogHeader>
           <DialogTitle>Add New Album</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="albumTitle">Album Title *</Label>
-            <Input
-              id="albumTitle"
-              value={albumForm.title}
-              onChange={(e) => handleAlbumFormChange('title', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter album title"
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="albumArtistId">Artist ID *</Label>
-            <Input
-              id="albumArtistId"
-              value={albumForm.artist_id}
-              onChange={(e) => handleAlbumFormChange('artist_id', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-              placeholder="Enter artist ID"
-              required
-            />
-            <p className="text-xs text-zinc-500 mt-1">Available artists: {artists.map(a => `${a.name} (${a.id.slice(0, 8)}...)`).join(', ')}</p>
-          </div>
-          <div>
-            <Label htmlFor="releaseDate">Release Date</Label>
-            <Input
-              id="releaseDate"
-              type="date"
-              value={albumForm.releaseDate}
-              onChange={(e) => handleAlbumFormChange('releaseDate', e.target.value)}
-              className="bg-zinc-800 border-zinc-700 text-white"
-            />
-          </div>
-          <div>
-            <Label htmlFor="albumCover">Album Cover</Label>
-            <Input
-              id="albumCover"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleAlbumFormChange('coverImage', e.target.files[0])}
-              className="bg-zinc-800 border-zinc-700 text-white"
-            />
-          </div>
-        </div>
+        <AlbumFormFields 
+          form={albumForm} 
+          onChange={handleAlbumFormChange} 
+          artists={artists}
+        />
         <div className="flex justify-end space-x-2 mt-4">
           <Button
             variant="outline"
@@ -1065,7 +1025,7 @@ const Admin = () => {
         </div>
       </DialogContent>
     </Dialog>
-  );
+  ), [isAlbumDialogOpen, albumForm, artists, isSaving, handleAlbumFormChange]);
 
   const AddPlaylistDialog = () => (
     <Dialog open={isPlaylistDialogOpen} onOpenChange={setIsPlaylistDialogOpen}>
