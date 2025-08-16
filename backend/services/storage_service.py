@@ -92,7 +92,8 @@ class StorageService:
         """Delete a file from Supabase storage"""
         try:
             result = self.supabase.storage.from_(bucket_name).remove([file_path])
-            return not result.error
+            # Check if deletion was successful (newer Supabase client)
+            return not (hasattr(result, 'status_code') and result.status_code != 200)
         except Exception as e:
             return False
 
