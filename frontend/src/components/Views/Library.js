@@ -95,7 +95,7 @@ const Library = () => {
 
   const SongRow = ({ song, showLikeButton = false }) => {
     const isCurrentSong = currentSong?.id === song.id;
-    const isLiked = likedSongs.has(song.id);
+    const isLiked = likedSongs.some(likedSong => likedSong.id === song.id);
     
     return (
       <div 
@@ -113,7 +113,7 @@ const Library = () => {
             }`} />
           </div>
           <img
-            src={song.coverUrl}
+            src={song.coverUrl || song.cover_url}
             alt={song.title}
             className="w-10 h-10 rounded-md object-cover ml-2"
           />
@@ -123,10 +123,10 @@ const Library = () => {
             }`}>
               {song.title}
             </p>
-            <p className="text-zinc-400 text-sm truncate">{song.artist}</p>
+            <p className="text-zinc-400 text-sm truncate">{song.artist || song.artist?.name}</p>
           </div>
           <div className="hidden md:block text-zinc-400 text-sm ml-4">
-            {song.album}
+            {song.album || song.album?.title || 'Single'}
           </div>
           <div className="text-zinc-400 text-sm ml-4 flex items-center">
             <Clock className="w-3 h-3 mr-1" />
