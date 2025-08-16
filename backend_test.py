@@ -72,15 +72,15 @@ class YantraTuneAPITester:
         """Test Artists CRUD operations"""
         # Test GET all artists
         try:
-            response = requests.get(f"{self.base_url}/artists")
+            response = requests.get(f"{self.base_url}/artists/")
             if response.status_code == 200:
                 artists = response.json()
-                self.log_test("GET /artists", True, f"Retrieved {len(artists)} artists")
+                self.log_test("GET /artists/", True, f"Retrieved {len(artists)} artists")
             else:
-                self.log_test("GET /artists", False, f"Status: {response.status_code}")
+                self.log_test("GET /artists/", False, f"Status: {response.status_code}")
                 return False
         except Exception as e:
-            self.log_test("GET /artists", False, f"Error: {str(e)}")
+            self.log_test("GET /artists/", False, f"Error: {str(e)}")
             return False
 
         # Test POST create artist
@@ -91,11 +91,11 @@ class YantraTuneAPITester:
         }
         
         try:
-            response = requests.post(f"{self.base_url}/artists", json=artist_data)
+            response = requests.post(f"{self.base_url}/artists/", json=artist_data)
             if response.status_code == 200:
                 artist = response.json()
                 self.created_entities['artists'].append(artist['id'])
-                self.log_test("POST /artists", True, f"Created artist: {artist['name']}")
+                self.log_test("POST /artists/", True, f"Created artist: {artist['name']}")
                 
                 # Test GET specific artist
                 response = requests.get(f"{self.base_url}/artists/{artist['id']}")
@@ -106,10 +106,10 @@ class YantraTuneAPITester:
                     
                 return True
             else:
-                self.log_test("POST /artists", False, f"Status: {response.status_code}, Response: {response.text}")
+                self.log_test("POST /artists/", False, f"Status: {response.status_code}, Response: {response.text}")
                 return False
         except Exception as e:
-            self.log_test("POST /artists", False, f"Error: {str(e)}")
+            self.log_test("POST /artists/", False, f"Error: {str(e)}")
             return False
 
     def test_albums_crud(self):
