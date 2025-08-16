@@ -117,12 +117,12 @@ def create_albums(artists):
             
         try:
             response = requests.post(f"{API}/albums", json=album_data, timeout=10)
-            if response.status_code == 201:
+            if response.status_code in [200, 201]:
                 album = response.json()
                 created_albums.append(album)
                 print(f"✅ Created album: {album['title']} (ID: {album['id']})")
             else:
-                print(f"❌ Failed to create album {album_data['title']}: {response.text}")
+                print(f"❌ Failed to create album {album_data['title']}: Status {response.status_code} - {response.text}")
         except Exception as e:
             print(f"❌ Error creating album {album_data['title']}: {e}")
     
