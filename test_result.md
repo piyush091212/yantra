@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "1. problem - when trying to add song the modal is being closed open again and again when trying to type something..... and add new button isnt looking good remove it and add album artist button isnt opening any modal and also in add song button make sure that songs can be stored in database bucket named music-file, cover-image.. add playlist isnt working as well make sure that everythingg works correctly and library page should show liked favroute songs artist and albums only and make sure it works correctly"
+user_problem_statement: "fix the flicker problem when adding anything new from any modal and make sure that delete button works correctly and actually delete it and that edit button should open an edit modal"
 
 backend:
   - task: "Fix Modal Issues and File Upload Integration"
