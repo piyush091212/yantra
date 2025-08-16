@@ -123,15 +123,15 @@ class YantraTuneAPITester:
         
         # Test GET all albums
         try:
-            response = requests.get(f"{self.base_url}/albums")
+            response = requests.get(f"{self.base_url}/albums/")
             if response.status_code == 200:
                 albums = response.json()
-                self.log_test("GET /albums", True, f"Retrieved {len(albums)} albums")
+                self.log_test("GET /albums/", True, f"Retrieved {len(albums)} albums")
             else:
-                self.log_test("GET /albums", False, f"Status: {response.status_code}")
+                self.log_test("GET /albums/", False, f"Status: {response.status_code}")
                 return False
         except Exception as e:
-            self.log_test("GET /albums", False, f"Error: {str(e)}")
+            self.log_test("GET /albums/", False, f"Error: {str(e)}")
             return False
 
         # Test POST create album
@@ -143,11 +143,11 @@ class YantraTuneAPITester:
         }
         
         try:
-            response = requests.post(f"{self.base_url}/albums", json=album_data)
+            response = requests.post(f"{self.base_url}/albums/", json=album_data)
             if response.status_code == 200:
                 album = response.json()
                 self.created_entities['albums'].append(album['id'])
-                self.log_test("POST /albums", True, f"Created album: {album['title']}")
+                self.log_test("POST /albums/", True, f"Created album: {album['title']}")
                 
                 # Test GET specific album
                 response = requests.get(f"{self.base_url}/albums/{album['id']}")
@@ -158,10 +158,10 @@ class YantraTuneAPITester:
                     
                 return True
             else:
-                self.log_test("POST /albums", False, f"Status: {response.status_code}, Response: {response.text}")
+                self.log_test("POST /albums/", False, f"Status: {response.status_code}, Response: {response.text}")
                 return False
         except Exception as e:
-            self.log_test("POST /albums", False, f"Error: {str(e)}")
+            self.log_test("POST /albums/", False, f"Error: {str(e)}")
             return False
 
     def test_songs_crud(self):
