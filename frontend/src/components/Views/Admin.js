@@ -66,6 +66,11 @@ const Admin = () => {
     setPlaylistForm(prev => ({...prev, [field]: value}));
   }, []);
 
+  // Load data on component mount
+  useEffect(() => {
+    loadAllData();
+  }, []);
+
   const loadAllData = async () => {
     setIsLoading(true);
     try {
