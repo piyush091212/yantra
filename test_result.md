@@ -198,10 +198,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Modal functionality testing"
-    - "File upload functionality"
-    - "Library filtering verification" 
-    - "Admin form workflows"
+    - "Flicker problem resolution verification"
+    - "Delete functionality testing" 
+    - "Edit modal functionality testing"
+    - "Real-time data synchronization testing"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
