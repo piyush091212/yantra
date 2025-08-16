@@ -17,41 +17,40 @@ def setup_storage_buckets():
         
         supabase: Client = create_client(supabase_url, supabase_key)
         
-        # Create music-file bucket
+        # Try to list existing buckets
         try:
-            result = supabase.storage.create_bucket("music-file", {
-                "public": True,
-                "file_size_limit": 100 * 1024 * 1024,  # 100MB limit
-                "allowed_mime_types": [
-                    "audio/mpeg", "audio/mp3", "audio/wav", "audio/ogg", 
-                    "audio/aac", "audio/m4a", "audio/flac"
-                ]
-            })
-            print("✅ Created 'music-file' bucket successfully")
+            buckets = supabase.storage.list_buckets()
+            print(f"📋 Existing buckets: {[bucket.name for bucket in buckets]}")
         except Exception as e:
-            if "already exists" in str(e).lower():
-                print("✅ 'music-file' bucket already exists")
-            else:
-                print(f"❌ Error creating 'music-file' bucket: {e}")
+            print(f"❌ Error listing buckets: {e}")
         
-        # Create cover-image bucket  
+        # Test if music-file bucket exists
         try:
-            result = supabase.storage.create_bucket("cover-image", {
-                "public": True,
-                "file_size_limit": 10 * 1024 * 1024,  # 10MB limit
-                "allowed_mime_types": [
-                    "image/jpeg", "image/jpg", "image/png", "image/webp", 
-                    "image/gif", "image/svg+xml"
-                ]
-            })
-            print("✅ Created 'cover-image' bucket successfully")
+            files = supabase.storage.from_("music-file").list()
+            print("✅ 'music-file' bucket exists and is accessible")
         except Exception as e:
-            if "already exists" in str(e).lower():
-                print("✅ 'cover-image' bucket already exists")
-            else:
-                print(f"❌ Error creating 'cover-image' bucket: {e}")
+            print(f"❌ 'music-file' bucket not accessible: {e}")
+            # Try to create the bucket with correct syntax
+            try:
+                result = supabase.storage.create_bucket("music-file")
+                print("✅ Created 'music-file' bucket")
+            except Exception as create_error:
+                print(f"❌ Failed to create 'music-file' bucket: {create_error}")
         
-        print("🎉 Supabase storage buckets setup complete!")
+        # Test if cover-image bucket exists
+        try:
+            files = supabase.storage.from_("cover-image").list()
+            print("✅ 'cover-image' bucket exists and is accessible")
+        except Exception as e:
+            print(f"❌ 'cover-image' bucket not accessible: {e}")
+            # Try to create the bucket with correct syntax
+            try:
+                result = supabase.storage.create_bucket("cover-image")
+                print("✅ Created 'cover-image' bucket")
+            except Exception as create_error:
+                print(f"❌ Failed to create 'cover-image' bucket: {create_error}")
+        
+        print("🎉 Supabase storage buckets check complete!")
         return True
         
     except Exception as e:
