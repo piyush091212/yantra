@@ -411,13 +411,14 @@ const Admin = () => {
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label htmlFor="artistName">Artist Name</Label>
+            <Label htmlFor="artistName">Artist Name *</Label>
             <Input
               id="artistName"
               value={artistForm.name}
               onChange={(e) => setArtistForm({...artistForm, name: e.target.value})}
               className="bg-zinc-800 border-zinc-700 text-white"
               placeholder="Enter artist name"
+              required
             />
           </div>
           <div>
@@ -447,13 +448,27 @@ const Admin = () => {
             variant="outline"
             onClick={() => setIsArtistDialogOpen(false)}
             className="border-zinc-700 text-white hover:text-white"
+            disabled={isSaving}
           >
             <X className="w-4 h-4 mr-2" />
             Cancel
           </Button>
-          <Button onClick={handleSaveArtist} className="bg-green-600 hover:bg-green-700 text-white">
-            <Save className="w-4 h-4 mr-2" />
-            Save Artist
+          <Button 
+            onClick={handleSaveArtist} 
+            className="bg-green-600 hover:bg-green-700 text-white"
+            disabled={isSaving}
+          >
+            {isSaving ? (
+              <>
+                <Upload className="w-4 h-4 mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save Artist
+              </>
+            )}
           </Button>
         </div>
       </DialogContent>
