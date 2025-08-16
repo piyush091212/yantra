@@ -222,12 +222,12 @@ def create_songs(artists, albums):
             
         try:
             response = requests.post(f"{API}/songs", json=song_data, timeout=10)
-            if response.status_code == 201:
+            if response.status_code in [200, 201]:
                 song = response.json()
                 created_songs.append(song)
                 print(f"✅ Created song: {song['title']} (ID: {song['id']})")
             else:
-                print(f"❌ Failed to create song {song_data['title']}: {response.text}")
+                print(f"❌ Failed to create song {song_data['title']}: Status {response.status_code} - {response.text}")
         except Exception as e:
             print(f"❌ Error creating song {song_data['title']}: {e}")
     
