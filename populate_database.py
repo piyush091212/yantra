@@ -61,12 +61,12 @@ def create_artists():
     for artist_data in artists_data:
         try:
             response = requests.post(f"{API}/artists", json=artist_data, timeout=10)
-            if response.status_code == 201:
+            if response.status_code in [200, 201]:
                 artist = response.json()
                 created_artists.append(artist)
                 print(f"✅ Created artist: {artist['name']} (ID: {artist['id']})")
             else:
-                print(f"❌ Failed to create artist {artist_data['name']}: {response.text}")
+                print(f"❌ Failed to create artist {artist_data['name']}: Status {response.status_code} - {response.text}")
         except Exception as e:
             print(f"❌ Error creating artist {artist_data['name']}: {e}")
     
