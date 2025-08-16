@@ -978,7 +978,7 @@ const Admin = () => {
             <Input
               id="playlistName"
               value={playlistForm.name}
-              onChange={(e) => setPlaylistForm({...playlistForm, name: e.target.value})}
+              onChange={(e) => handlePlaylistFormChange('name', e.target.value)}
               className="bg-zinc-800 border-zinc-700 text-white"
               placeholder="Enter playlist name"
               required
