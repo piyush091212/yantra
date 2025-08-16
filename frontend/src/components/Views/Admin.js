@@ -1206,7 +1206,7 @@ const Admin = () => {
                 <Textarea
                   id="editPlaylistDescription"
                   value={playlistForm.description}
-                  onChange={(e) => setPlaylistForm({...playlistForm, description: e.target.value})}
+                  onChange={(e) => handlePlaylistFormChange('description', e.target.value)}
                   className="bg-zinc-800 border-zinc-700 text-white"
                   placeholder="Enter playlist description"
                   rows={3}
