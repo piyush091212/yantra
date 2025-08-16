@@ -373,3 +373,151 @@ export const apiUtils = {
     }
   }
 };
+
+// Upload API
+export const uploadAPI = {
+  uploadAudio: async (file) => {
+    if (!(await shouldUseApi())) {
+      // Mock upload - return a fake URL
+      return {
+        filename: file.name,
+        url: `https://mock-audio-url.com/${file.name}`,
+        message: "Audio file uploaded successfully (mock)"
+      };
+    }
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await axios.post(`${API}/uploads/audio`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      timeout: 60000 // 60 seconds for file uploads
+    });
+    return response.data;
+  },
+
+  uploadImage: async (file) => {
+    if (!(await shouldUseApi())) {
+      // Mock upload - return a fake URL
+      return {
+        filename: file.name,
+        url: `https://mock-image-url.com/${file.name}`,
+        message: "Cover image uploaded successfully (mock)"
+      };
+    }
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await axios.post(`${API}/uploads/image`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      timeout: 30000 // 30 seconds for image uploads
+    });
+    return response.data;
+  }
+};
+
+// User Preferences API
+export const userAPI = {
+  likeSong: async (userId, songId) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Song liked successfully (mock)", is_liked: true };
+    }
+    
+    const response = await axios.post(`${API}/users/${userId}/like-song/${songId}`);
+    return response.data;
+  },
+
+  followArtist: async (userId, artistId) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Artist followed successfully (mock)", is_following: true };
+    }
+    
+    const response = await axios.post(`${API}/users/${userId}/follow-artist/${artistId}`);
+    return response.data;
+  },
+
+  saveAlbum: async (userId, albumId) => {
+    if (!(await shouldUseApi())) {
+      return { message: "Album saved successfully (mock)", is_saved: true };
+    }
+    
+    const response = await axios.post(`${API}/users/${userId}/save-album/${albumId}`);
+    return response.data;
+  },
+
+  getLikedSongs: async (userId, skip = 0, limit = 50) => {
+    if (!(await shouldUseApi())) {
+      // Mock liked songs - return subset of mock songs
+      const likedSongs = mockSongs.slice(0, 3);
+      return { songs: likedSongs, total: likedSongs.length };
+    }
+    
+    const response = await axios.get(`${API}/users/${userId}/liked-songs`, {
+      params: { skip, limit }
+    });
+    return response.data;
+  },
+
+  getFollowedArtists: async (userId, skip = 0, limit = 50) => {
+    if (!(await shouldUseApi())) {
+      // Mock followed artists - return subset of mock artists
+      const followedArtists = mockArtists.slice(0, 2);
+      return { artists: followedArtists, total: followedArtists.length };
+    }
+    
+    const response = await axios.get(`${API}/users/${userId}/followed-artists`, {
+      params: { skip, limit }
+    });
+    return response.data;
+  },
+
+  getSavedAlbums: async (userId, skip = 0, limit = 50) => {
+    if (!(await shouldUseApi())) {
+      // Mock saved albums - return subset of mock albums
+      const savedAlbums = mockAlbums.slice(0, 2);
+      return { albums: savedAlbums, total: savedAlbums.length };
+    }
+    
+    const response = await axios.get(`${API}/users/${userId}/saved-albums`, {
+      params: { skip, limit }
+    });
+    return response.data;
+  }
+};
+
+// Enhanced songs API with file upload
+songsAPI.createWithFiles = async (songData) => {
+  if (!(await shouldUseApi())) {
+    // Mock creation with files
+    return { 
+      ...songData, 
+      id: Date.now().toString(), 
+      created_at: new Date().toISOString(), 
+      updated_at: new Date().toISOString(),
+      audio_url: songData.audioFile ? `https://mock-audio-url.com/${songData.audioFile.name}` : null,
+      cover_url: songData.coverImage ? `https://mock-image-url.com/${songData.coverImage.name}` : null
+    };
+  }
+  
+  const formData = new FormData();
+  formData.append('title', songData.title);
+  formData.append('artist_id', songData.artist_id);
+  if (songData.album_id) formData.append('album_id', songData.album_id);
+  if (songData.duration) formData.append('duration', songData.duration);
+  if (songData.genre) formData.append('genre', songData.genre);
+  if (songData.audioFile) formData.append('audio_file', songData.audioFile);
+  if (songData.coverImage) formData.append('cover_image', songData.coverImage);
+  
+  const response = await axios.post(`${API}/songs/upload`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    timeout: 120000 // 2 minutes for file uploads
+  });
+  return response.data;
+};
