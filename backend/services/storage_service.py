@@ -37,8 +37,9 @@ class StorageService:
                 }
             )
             
-            if result.error:
-                raise HTTPException(status_code=500, detail=f"Upload failed: {result.error}")
+            # Check if upload was successful (newer Supabase client)
+            if hasattr(result, 'status_code') and result.status_code != 200:
+                raise HTTPException(status_code=500, detail=f"Upload failed with status: {result.status_code}")
             
             # Get public URL
             public_url = self.supabase.storage.from_("music-files").get_public_url(unique_filename)
