@@ -57,26 +57,40 @@ const Library = () => {
   }, [user?.id]);
 
   const handlePlaySong = (song) => {
-    playSong(song, mockSongs);
+    playSong(song, likedSongs);
   };
 
   const handlePlayPlaylist = (playlist) => {
-    const playlistSongs = mockSongs.filter(song => 
-      playlist.songs.includes(song.id)
-    );
+    const playlistSongs = playlist.songs || [];
     if (playlistSongs.length > 0) {
       playSong(playlistSongs[0], playlistSongs);
     }
   };
 
-  const toggleLike = (songId) => {
-    const newLikedSongs = new Set(likedSongs);
-    if (newLikedSongs.has(songId)) {
-      newLikedSongs.delete(songId);
-    } else {
-      newLikedSongs.add(songId);
+  const toggleLike = async (songId) => {
+    if (!user?.id) return;
+    
+    try {
+      const result = await userAPI.likeSong(user.id, songId);
+      
+      // Update local state
+      if (result.is_liked) {
+        // Add song to liked songs if not already there
+        const songExists = likedSongs.find(song => song.id === songId);
+        if (!songExists) {
+          // In a real app, you'd fetch the full song data
+          const mockSong = mockSongs.find(song => song.id === songId);
+          if (mockSong) {
+            setLikedSongs(prev => [...prev, mockSong]);
+          }
+        }
+      } else {
+        // Remove song from liked songs
+        setLikedSongs(prev => prev.filter(song => song.id !== songId));
+      }
+    } catch (error) {
+      console.error('Failed to toggle like:', error);
     }
-    setLikedSongs(newLikedSongs);
   };
 
   const SongRow = ({ song, showLikeButton = false }) => {
