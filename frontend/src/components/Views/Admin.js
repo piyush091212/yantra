@@ -823,7 +823,7 @@ const Admin = () => {
             <Input
               id="artistName"
               value={artistForm.name}
-              onChange={(e) => setArtistForm({...artistForm, name: e.target.value})}
+              onChange={(e) => handleArtistFormChange('name', e.target.value)}
               className="bg-zinc-800 border-zinc-700 text-white"
               placeholder="Enter artist name"
               required
