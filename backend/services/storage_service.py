@@ -64,7 +64,7 @@ class StorageService:
             file_contents = await file.read()
             
             # Upload to Supabase storage
-            result = self.supabase.storage.from_("cover-image").upload(
+            result = self.supabase.storage.from_("cover-images").upload(
                 unique_filename, 
                 file_contents,
                 {
