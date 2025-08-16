@@ -1090,7 +1090,7 @@ const Admin = () => {
                 <Input
                   id="editGenre"
                   value={songForm.genre}
-                  onChange={(e) => setSongForm({...songForm, genre: e.target.value})}
+                  onChange={(e) => handleSongFormChange('genre', e.target.value)}
                   className="bg-zinc-800 border-zinc-700 text-white"
                   placeholder="Enter genre"
                 />
