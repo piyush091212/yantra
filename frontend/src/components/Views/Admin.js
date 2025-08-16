@@ -36,41 +36,44 @@ const Admin = () => {
     name: '', description: '', coverImage: null
   });
 
-  const handleSaveSong = () => {
-    // Mock save functionality
+  const handleSaveSong = async () => {
+    // TODO: Implement actual API call
     toast({
       title: "Song saved successfully",
       description: `"${songForm.title}" has been added to your library.`
     });
-    setSongForm({ title: '', artist: '', album: '', duration: '', genre: '', audioUrl: '', coverUrl: '' });
-    setIsAddDialogOpen(false);
+    setSongForm({ title: '', artist: '', album: '', duration: '', genre: '', audioFile: null, coverImage: null });
+    setIsSongDialogOpen(false);
   };
 
-  const handleSaveArtist = () => {
+  const handleSaveArtist = async () => {
+    // TODO: Implement actual API call
     toast({
       title: "Artist saved successfully",
       description: `"${artistForm.name}" has been added to your library.`
     });
-    setArtistForm({ name: '', bio: '', avatarUrl: '' });
-    setIsAddDialogOpen(false);
+    setArtistForm({ name: '', bio: '', avatarImage: null });
+    setIsArtistDialogOpen(false);
   };
 
-  const handleSaveAlbum = () => {
+  const handleSaveAlbum = async () => {
+    // TODO: Implement actual API call
     toast({
       title: "Album saved successfully",
       description: `"${albumForm.title}" has been added to your library.`
     });
-    setAlbumForm({ title: '', artist: '', coverUrl: '', releaseDate: '' });
-    setIsAddDialogOpen(false);
+    setAlbumForm({ title: '', artist: '', coverImage: null, releaseDate: '' });
+    setIsAlbumDialogOpen(false);
   };
 
-  const handleSavePlaylist = () => {
+  const handleSavePlaylist = async () => {
+    // TODO: Implement actual API call
     toast({
       title: "Playlist saved successfully",
       description: `"${playlistForm.name}" has been created.`
     });
-    setPlaylistForm({ name: '', description: '', coverUrl: '' });
-    setIsAddDialogOpen(false);
+    setPlaylistForm({ name: '', description: '', coverImage: null });
+    setIsPlaylistDialogOpen(false);
   };
 
   const handleDelete = (type, item) => {
